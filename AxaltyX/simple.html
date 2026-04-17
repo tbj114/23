@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AxaltyX - 专业统计分析软件</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #262626;
+            line-height: 1.5;
+        }
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .menu-bar {
+            height: 32px;
+            background-color: #f0f0f0;
+            border-bottom: 1px solid #e8e8e8;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 12px;
+        }
+        .menu-item {
+            margin-right: 24px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 2px;
+            position: relative;
+        }
+        .menu-item:hover {
+            background-color: rgba(24, 144, 255, 0.1);
+        }
+        .submenu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+            z-index: 1000;
+            min-width: 160px;
+            display: none;
+        }
+        .menu-item:hover .submenu {
+            display: block;
+        }
+        .submenu-item {
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .submenu-item:hover {
+            background-color: rgba(24, 144, 255, 0.1);
+        }
+        .toolbar {
+            height: 44px;
+            background-color: #ffffff;
+            border-bottom: 1px solid #e8e8e8;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 8px;
+        }
+        .tool-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background-color: #f5f5f5;
+        }
+        .tool-btn {
+            padding: 4px 8px;
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            background-color: #ffffff;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+        .tool-btn:hover {
+            border-color: #1890ff;
+            color: #1890ff;
+        }
+        .main-workspace {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #ffffff;
+            border-right: 1px solid #e8e8e8;
+            padding: 16px;
+            overflow-y: auto;
+        }
+        .sidebar-section {
+            margin-bottom: 24px;
+        }
+        .sidebar-section-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #8c8c8c;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sidebar-item {
+            padding: 6px 12px;
+            margin-bottom: 2px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+            font-size: 12px;
+            color: #595959;
+        }
+        .sidebar-item:hover {
+            background-color: rgba(24, 144, 255, 0.08);
+            color: #1890ff;
+        }
+        .sidebar-item.active {
+            background-color: #1890ff;
+            color: white;
+        }
+        .central-workspace {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .tabs {
+            height: 32px;
+            background-color: #f5f5f5;
+            border-bottom: 1px solid #e8e8e8;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            gap: 4px;
+        }
+        .tab {
+            padding: 6px 16px;
+            border: 1px solid #e8e8e8;
+            border-bottom: none;
+            border-radius: 4px 4px 0 0;
+            background-color: #ffffff;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+        .tab:hover {
+            background-color: #f0f0f0;
+        }
+        .tab.active {
+            background-color: #ffffff;
+            border-bottom: 1px solid #ffffff;
+            margin-bottom: -1px;
+        }
+        .data-area {
+            flex: 1;
+            background-color: #ffffff;
+            overflow: auto;
+            position: relative;
+        }
+        .data-table-container {
+            padding: 16px;
+        }
+        .data-table {
+            width: auto;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        .data-table th,
+        .data-table td {
+            padding: 6px 8px;
+            border: 1px solid #e8e8e8;
+            text-align: center;
+            min-width: 80px;
+            height: 24px;
+        }
+        .data-table th {
+            background-color: #f0f0f0;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .data-table .row-header {
+            background-color: #f0f0f0;
+            font-weight: 600;
+            position: sticky;
+            left: 0;
+            z-index: 5;
+        }
+        .data-table td {
+            background-color: white;
+        }
+        .data-table td:hover {
+            background-color: rgba(24, 144, 255, 0.05);
+        }
+        .data-table input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-size: 12px;
+            padding: 2px;
+            outline: none;
+        }
+        .data-table input:focus {
+            background-color: rgba(24, 144, 255, 0.1);
+        }
+        .properties-panel {
+            width: 280px;
+            background-color: #ffffff;
+            border-left: 1px solid #e8e8e8;
+            display: flex;
+            flex-direction: column;
+        }
+        .properties-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e8e8e8;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .properties-content {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+        }
+        .property-group {
+            margin-bottom: 20px;
+        }
+        .property-group-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #8c8c8c;
+            margin-bottom: 8px;
+        }
+        .property-item {
+            margin-bottom: 12px;
+        }
+        .property-label {
+            font-size: 12px;
+            color: #595959;
+            margin-bottom: 4px;
+        }
+        .property-input {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .property-input:focus {
+            outline: none;
+            border-color: #1890ff;
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+        }
+        .status-bar {
+            height: 24px;
+            background-color: #f0f0f0;
+            border-top: 1px solid #e8e8e8;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 11px;
+            color: #8c8c8c;
+        }
+        .status-item {
+            margin-right: 24px;
+        }
+        .btn {
+            padding: 6px 12px;
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            background-color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+            font-size: 12px;
+        }
+        .btn:hover {
+            border-color: #1890ff;
+            color: #1890ff;
+        }
+        .btn-primary {
+            background-color: #1890ff;
+            border-color: #1890ff;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #40a9ff;
+            border-color: #40a9ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 顶部菜单栏 -->
+        <div class="menu-bar">
+            <div class="menu-item">
+                文件
+                <div class="submenu">
+                    <div class="submenu-item" onclick="newProject()">新建项目</div>
+                    <div class="submenu-item" onclick="openProject()">打开项目</div>
+                    <div class="submenu-item" onclick="saveProject()">保存项目</div>
+                    <div class="submenu-item" onclick="exportData()">导出数据</div>
+                    <div class="submenu-item" onclick="exitApp()">退出</div>
+                </div>
+            </div>
+            <div class="menu-item">
+                编辑
+                <div class="submenu">
+                    <div class="submenu-item" onclick="cutData()">剪切</div>
+                    <div class="submenu-item" onclick="copyData()">复制</div>
+                    <div class="submenu-item" onclick="pasteData()">粘贴</div>
+                    <div class="submenu-item" onclick="clearData()">清除</div>
+                </div>
+            </div>
+            <div class="menu-item">
+                视图
+                <div class="submenu">
+                    <div class="submenu-item" onclick="toggleSidebar()">显示/隐藏侧边栏</div>
+                    <div class="submenu-item" onclick="toggleProperties()">显示/隐藏属性面板</div>
+                    <div class="submenu-item" onclick="resetLayout()">重置布局</div>
+                </div>
+            </div>
+            <div class="menu-item">
+                数据
+                <div class="submenu">
+                    <div class="submenu-item" onclick="importData()">导入数据</div>
+                    <div class="submenu-item" onclick="defineVariables()">定义变量</div>
+                    <div class="submenu-item" onclick="transformData()">转换数据</div>
+                    <div class="submenu-item" onclick="cleanData()">数据清洗</div>
+                </div>
+            </div>
+            <div class="menu-item">
+                分析
+                <div class="submenu">
+                    <div class="submenu-item" onclick="showAnalysis('descriptive')">描述性统计</div>
+                    <div class="submenu-item" onclick="showAnalysis('compare_means')">比较均值</div>
+                    <div class="submenu-item" onclick="showAnalysis('correlate')">相关分析</div>
+                    <div class="submenu-item" onclick="showAnalysis('regression')">回归分析</div>
+                    <div class="submenu-item" onclick="showAnalysis('anova')">方差分析</div>
+                    <div class="submenu-item" onclick="showAnalysis('nonparametric')">非参数检验</div>
+                    <div class="submenu-item" onclick="showAnalysis('survival')">生存分析</div>
+                    <div class="submenu-item" onclick="showAnalysis('time_series')">时间序列分析</div>
+                    <div class="submenu-item" onclick="showAnalysis('machine_learning')">机器学习</div>
+                </div>
+            </div>
+            <div class="menu-item">
+                绘图
+                <div class="submenu">
+                    <div class="submenu-item" onclick="showAnalysis('charts')">图表</div>
+                    <div class="submenu-item" onclick="showAnalysis('interactive')">交互式可视化</div>
+                </div>
+            </div>
+            <div class="menu-item">
+                工具
+                <div class="submenu">
+                    <div class="submenu-item" onclick="showAnalysis('data_prep')">数据准备</div>
+                    <div class="submenu-item" onclick="showAnalysis('transform')">转换</div>
+                    <div class="submenu-item" onclick="showAnalysis('reports')">报告</div>
+                    <div class="submenu-item" onclick="showSettings()">设置</div>
+                </div>
+            </div>
+            <div class="menu-item">
+                帮助
+                <div class="submenu">
+                    <div class="submenu-item" onclick="showHelp()">帮助文档</div>
+                    <div class="submenu-item" onclick="showTutorial()">教程</div>
+                    <div class="submenu-item" onclick="showAbout()">关于</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 工具栏 -->
+        <div class="toolbar">
+            <div class="tool-group">
+                <button class="tool-btn" title="新建" onclick="newProject()">新建</button>
+                <button class="tool-btn" title="打开" onclick="openProject()">打开</button>
+                <button class="tool-btn" title="保存" onclick="saveProject()">保存</button>
+            </div>
+            <div class="tool-group">
+                <button class="tool-btn" title="剪切" onclick="cutData()">剪切</button>
+                <button class="tool-btn" title="复制" onclick="copyData()">复制</button>
+                <button class="tool-btn" title="粘贴" onclick="pasteData()">粘贴</button>
+            </div>
+            <div class="tool-group">
+                <button class="tool-btn" title="导入数据" onclick="importData()">导入</button>
+                <button class="tool-btn" title="导出数据" onclick="exportData()">导出</button>
+            </div>
+            <div class="tool-group">
+                <button class="tool-btn" title="变量视图" onclick="switchToVariableView()">变量视图</button>
+                <button class="tool-btn" title="数据视图" onclick="switchToDataView()">数据视图</button>
+            </div>
+        </div>
+        
+        <!-- 主工作区 -->
+        <div class="main-workspace">
+            <!-- 左侧边栏 -->
+            <div class="sidebar" id="sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">分析</div>
+                    <div class="sidebar-item" data-section="descriptive" onclick="showAnalysis('descriptive')">描述性统计</div>
+                    <div class="sidebar-item" data-section="compare_means" onclick="showAnalysis('compare_means')">比较均值</div>
+                    <div class="sidebar-item" data-section="correlate" onclick="showAnalysis('correlate')">相关</div>
+                    <div class="sidebar-item" data-section="regression" onclick="showAnalysis('regression')">回归</div>
+                    <div class="sidebar-item" data-section="anova" onclick="showAnalysis('anova')">方差分析</div>
+                    <div class="sidebar-item" data-section="nonparametric" onclick="showAnalysis('nonparametric')">非参数检验</div>
+                    <div class="sidebar-item" data-section="survival" onclick="showAnalysis('survival')">生存分析</div>
+                    <div class="sidebar-item" data-section="time_series" onclick="showAnalysis('time_series')">时间序列</div>
+                    <div class="sidebar-item" data-section="machine_learning" onclick="showAnalysis('machine_learning')">机器学习</div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">绘图</div>
+                    <div class="sidebar-item" data-section="charts" onclick="showAnalysis('charts')">图表</div>
+                    <div class="sidebar-item" data-section="interactive" onclick="showAnalysis('interactive')">交互式可视化</div>
+                </div>
+                
+                <div class="sidebar-section">
+                    <div class="sidebar-section-title">实用程序</div>
+                    <div class="sidebar-item" data-section="data_prep" onclick="showAnalysis('data_prep')">数据准备</div>
+                    <div class="sidebar-item" data-section="transform" onclick="showAnalysis('transform')">转换</div>
+                    <div class="sidebar-item" data-section="reports" onclick="showAnalysis('reports')">报告</div>
+                </div>
+            </div>
+            
+            <!-- 中央工作区 -->
+            <div class="central-workspace">
+                <!-- 标签页 -->
+                <div class="tabs">
+                    <div class="tab active" data-tab="data_view" onclick="switchTab('data_view')">数据视图</div>
+                    <div class="tab" data-tab="variable_view" onclick="switchTab('variable_view')">变量视图</div>
+                    <div class="tab" data-tab="output" onclick="switchTab('output')">输出</div>
+                </div>
+                
+                <!-- 数据表格区域 -->
+                <div class="data-area">
+                    <!-- 数据视图 -->
+                    <div id="data_view" class="tab-content active">
+                        <div class="data-table-container">
+                            <table class="data-table" id="data_table">
+                                <thead id="table_header">
+                                    <!-- 列标题将通过JavaScript生成 -->
+                                </thead>
+                                <tbody id="table_body">
+                                    <!-- 表格数据将通过JavaScript生成 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- 变量视图 -->
+                    <div id="variable_view" class="tab-content" style="display: none;">
+                        <div class="data-table-container">
+                            <table class="data-table" id="variable_table">
+                                <thead>
+                                    <tr>
+                                        <th>变量名</th>
+                                        <th>类型</th>
+                                        <th>宽度</th>
+                                        <th>小数</th>
+                                        <th>标签</th>
+                                        <th>值</th>
+                                        <th>缺失</th>
+                                        <th>列</th>
+                                        <th>对齐</th>
+                                        <th>测量</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="variable_table_body">
+                                    <!-- 变量数据将通过JavaScript生成 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- 输出视图 -->
+                    <div id="output" class="tab-content" style="display: none;">
+                        <div class="data-table-container">
+                            <div id="output_content">
+                                <p style="text-align: center; color: #8c8c8c; margin-top: 40px;">输出将显示在这里</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右侧属性面板 -->
+            <div class="properties-panel" id="properties_panel">
+                <div class="properties-header">属性</div>
+                <div class="properties-content">
+                    <div class="property-group">
+                        <div class="property-group-title">数据集</div>
+                        <div class="property-item">
+                            <div class="property-label">名称</div>
+                            <input type="text" class="property-input" id="dataset_name" value="未命名数据集">
+                        </div>
+                        <div class="property-item">
+                            <div class="property-label">变量数</div>
+                            <input type="text" class="property-input" id="variable_count" value="10" disabled>
+                        </div>
+                        <div class="property-item">
+                            <div class="property-label">案例数</div>
+                            <input type="text" class="property-input" id="case_count" value="100" disabled>
+                        </div>
+                    </div>
+                    
+                    <div class="property-group">
+                        <div class="property-group-title">变量</div>
+                        <div class="property-item">
+                            <div class="property-label">当前变量</div>
+                            <input type="text" class="property-input" id="current_variable" value="var1" disabled>
+                        </div>
+                        <div class="property-item">
+                            <div class="property-label">变量标签</div>
+                            <input type="text" class="property-input" id="variable_label" value="变量 1">
+                        </div>
+                        <div class="property-item">
+                            <div class="property-label">变量类型</div>
+                            <select class="property-input" id="variable_type">
+                                <option value="numeric">数值</option>
+                                <option value="string">字符串</option>
+                                <option value="date">日期</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="property-group">
+                        <div class="property-group-title">分析</div>
+                        <button class="btn btn-primary" style="width: 100%; margin-bottom: 8px;" onclick="runAnalysis()">运行分析</button>
+                        <button class="btn" style="width: 100%;" onclick="clearOutput()">清除输出</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-item">就绪</div>
+            <div class="status-item">变量: 10</div>
+            <div class="status-item">案例: 100</div>
+            <div class="status-item">Python服务器: 运行中</div>
+        </div>
+    </div>
+    
+    <script>
+        console.log('Script started');
+        
+        // 初始化应用
+        function initApp() {
+            console.log('Initializing app...');
+            // 创建100*100的空表格
+            createEmptyTable(100, 10);
+            // 初始化变量视图
+            initVariableView();
+            // 加载示例数据
+            loadSampleData();
+            console.log('App initialized');
+        }
+        
+        // 创建空表格
+        function createEmptyTable(rows, cols) {
+            const tableHeader = document.getElementById('table_header');
+            const tableBody = document.getElementById('table_body');
+            
+            // 清空表格
+            tableHeader.innerHTML = '';
+            tableBody.innerHTML = '';
+            
+            // 创建表头
+            const headerRow = document.createElement('tr');
+            // 添加行号列
+            const rowHeaderTh = document.createElement('th');
+            rowHeaderTh.textContent = '';
+            rowHeaderTh.style.backgroundColor = '#e0e0e0';
+            headerRow.appendChild(rowHeaderTh);
+            
+            // 添加列标题
+            for (let i = 1; i <= cols; i++) {
+                const th = document.createElement('th');
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = `var${i}`;
+                input.onchange = function() {
+                    updateVariableName(i-1, this.value);
+                };
+                th.appendChild(input);
+                headerRow.appendChild(th);
+            }
+            tableHeader.appendChild(headerRow);
+            
+            // 创建表格内容
+            for (let i = 1; i <= rows; i++) {
+                const row = document.createElement('tr');
+                
+                // 添加行号
+                const rowHeaderTd = document.createElement('td');
+                rowHeaderTd.className = 'row-header';
+                const rowInput = document.createElement('input');
+                rowInput.type = 'text';
+                rowInput.value = i;
+                rowInput.onchange = function() {
+                    updateRowName(i-1, this.value);
+                };
+                rowHeaderTd.appendChild(rowInput);
+                row.appendChild(rowHeaderTd);
+                
+                // 添加单元格
+                for (let j = 1; j <= cols; j++) {
+                    const td = document.createElement('td');
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = '';
+                    input.onchange = function() {
+                        updateCellValue(i-1, j-1, this.value);
+                    };
+                    td.appendChild(input);
+                    row.appendChild(td);
+                }
+                tableBody.appendChild(row);
+            }
+        }
+        
+        // 初始化变量视图
+        function initVariableView() {
+            const variableTableBody = document.getElementById('variable_table_body');
+            variableTableBody.innerHTML = '';
+            
+            for (let i = 1; i <= 10; i++) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="text" value="var${i}" onchange="updateVariableNameInView(${i-1}, this.value)"></td>
+                    <td><select><option value="numeric">数值</option><option value="string">字符串</option><option value="date">日期</option></select></td>
+                    <td><input type="number" value="8" min="1"></td>
+                    <td><input type="number" value="2" min="0"></td>
+                    <td><input type="text" value="变量 ${i}"></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="number" value="${i}" min="1"></td>
+                    <td><select><option value="right">右</option><option value="left">左</option><option value="center">中</option></select></td>
+                    <td><select><option value="scale">度量</option><option value="ordinal">有序</option><option value="nominal">名义</option></select></td>
+                `;
+                variableTableBody.appendChild(row);
+            }
+        }
+        
+        // 更新变量名
+        function updateVariableName(index, name) {
+            // 更新表头中的变量名
+            const headers = document.querySelectorAll('#table_header th input');
+            if (headers[index+1]) {
+                headers[index+1].value = name;
+            }
+            
+            // 更新变量视图中的变量名
+            const variableRows = document.querySelectorAll('#variable_table_body tr');
+            if (variableRows[index]) {
+                const input = variableRows[index].querySelector('td:first-child input');
+                if (input) {
+                    input.value = name;
+                }
+            }
+        }
+        
+        // 更新变量视图中的变量名
+        function updateVariableNameInView(index, name) {
+            // 更新表头中的变量名
+            const headers = document.querySelectorAll('#table_header th input');
+            if (headers[index+1]) {
+                headers[index+1].value = name;
+            }
+        }
+        
+        // 更新行名
+        function updateRowName(index, name) {
+            // 行名更新逻辑
+        }
+        
+        // 更新单元格值
+        function updateCellValue(row, col, value) {
+            // 单元格值更新逻辑
+        }
+        
+        // 加载示例数据
+        function loadSampleData() {
+            const sampleData = {
+                'ID': Array.from({length: 100}, (_, i) => i+1),
+                '年龄': Array.from({length: 100}, () => Math.floor(Math.random() * 30) + 20),
+                '性别': Array.from({length: 100}, () => Math.random() > 0.5 ? '男' : '女'),
+                '得分': Array.from({length: 100}, () => Math.floor(Math.random() * 30) + 70),
+                '组别': Array.from({length: 100}, () => ['A', 'B', 'C'][Math.floor(Math.random() * 3)]),
+                '身高': Array.from({length: 100}, () => (Math.random() * 30 + 150).toFixed(1)),
+                '体重': Array.from({length: 100}, () => (Math.random() * 30 + 50).toFixed(1)),
+                'BMI': Array.from({length: 100}, () => (Math.random() * 10 + 18).toFixed(2)),
+                '成绩': Array.from({length: 100}, () => Math.floor(Math.random() * 40) + 60),
+                '排名': Array.from({length: 100}, (_, i) => i+1)
+            };
+            
+            updateTableFromData(sampleData);
+            updateVariableViewFromData(sampleData);
+        }
+        
+        // 从数据更新表格
+        function updateTableFromData(data) {
+            const variables = Object.keys(data);
+            const rowCount = data[variables[0]].length;
+            
+            // 更新表头
+            const tableHeader = document.getElementById('table_header');
+            tableHeader.innerHTML = '';
+            
+            const headerRow = document.createElement('tr');
+            // 添加行号列
+            const rowHeaderTh = document.createElement('th');
+            rowHeaderTh.textContent = '';
+            rowHeaderTh.style.backgroundColor = '#e0e0e0';
+            headerRow.appendChild(rowHeaderTh);
+            
+            // 添加列标题
+            variables.forEach((variable, index) => {
+                const th = document.createElement('th');
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.value = variable;
+                input.onchange = function() {
+                    updateVariableName(index, this.value);
+                };
+                th.appendChild(input);
+                headerRow.appendChild(th);
+            });
+            tableHeader.appendChild(headerRow);
+            
+            // 更新表格内容
+            const tableBody = document.getElementById('table_body');
+            tableBody.innerHTML = '';
+            
+            for (let i = 0; i < rowCount; i++) {
+                const row = document.createElement('tr');
+                
+                // 添加行号
+                const rowHeaderTd = document.createElement('td');
+                rowHeaderTd.className = 'row-header';
+                const rowInput = document.createElement('input');
+                rowInput.type = 'text';
+                rowInput.value = i+1;
+                rowInput.onchange = function() {
+                    updateRowName(i, this.value);
+                };
+                rowHeaderTd.appendChild(rowInput);
+                row.appendChild(rowHeaderTd);
+                
+                // 添加单元格
+                variables.forEach(variable => {
+                    const td = document.createElement('td');
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = data[variable][i];
+                    input.onchange = function() {
+                        updateCellValue(i, variables.indexOf(variable), this.value);
+                    };
+                    td.appendChild(input);
+                    row.appendChild(td);
+                });
+                tableBody.appendChild(row);
+            }
+            
+            // 更新状态栏
+            document.querySelector('.status-item:nth-child(2)').textContent = `变量: ${variables.length}`;
+            document.querySelector('.status-item:nth-child(3)').textContent = `案例: ${rowCount}`;
+            document.getElementById('variable_count').value = variables.length;
+            document.getElementById('case_count').value = rowCount;
+        }
+        
+        // 从数据更新变量视图
+        function updateVariableViewFromData(data) {
+            const variables = Object.keys(data);
+            const variableTableBody = document.getElementById('variable_table_body');
+            variableTableBody.innerHTML = '';
+            
+            variables.forEach((variable, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="text" value="${variable}" onchange="updateVariableNameInView(${index}, this.value)"></td>
+                    <td><select><option value="numeric">数值</option><option value="string">字符串</option><option value="date">日期</option></select></td>
+                    <td><input type="number" value="8" min="1"></td>
+                    <td><input type="number" value="2" min="0"></td>
+                    <td><input type="text" value="${variable}"></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="text" value=""></td>
+                    <td><input type="number" value="${index+1}" min="1"></td>
+                    <td><select><option value="right">右</option><option value="left">左</option><option value="center">中</option></select></td>
+                    <td><select><option value="scale">度量</option><option value="ordinal">有序</option><option value="nominal">名义</option></select></td>
+                `;
+                variableTableBody.appendChild(row);
+            });
+        }
+        
+        // 切换标签页
+        function switchTab(tabId) {
+            // 移除所有active类
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+            
+            // 添加active类到当前标签页
+            document.querySelector(`.tab[data-tab="${tabId}"]`).classList.add('active');
+            document.getElementById(tabId).style.display = 'block';
+        }
+        
+        // 切换到变量视图
+        function switchToVariableView() {
+            switchTab('variable_view');
+        }
+        
+        // 切换到数据视图
+        function switchToDataView() {
+            switchTab('data_view');
+        }
+        
+        // 显示分析面板
+        function showAnalysis(section) {
+            alert('分析功能正在开发中');
+        }
+        
+        // 菜单函数
+        function newProject() {
+            if (confirm('确定要新建项目吗？当前未保存的数据将会丢失。')) {
+                createEmptyTable(100, 10);
+                initVariableView();
+                alert('新项目已创建');
+            }
+        }
+        
+        function openProject() {
+            alert('打开项目功能正在开发中');
+        }
+        
+        function saveProject() {
+            const datasetName = document.getElementById('dataset_name').value;
+            alert(`项目 "${datasetName}" 已保存`);
+        }
+        
+        function exportData() {
+            alert('导出数据功能正在开发中');
+        }
+        
+        function exitApp() {
+            if (confirm('确定要退出应用吗？')) {
+                alert('应用将退出');
+            }
+        }
+        
+        function cutData() {
+            alert('剪切功能正在开发中');
+        }
+        
+        function copyData() {
+            alert('复制功能正在开发中');
+        }
+        
+        function pasteData() {
+            alert('粘贴功能正在开发中');
+        }
+        
+        function clearData() {
+            if (confirm('确定要清除所有数据吗？')) {
+                createEmptyTable(100, 10);
+                alert('数据已清除');
+            }
+        }
+        
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar.style.display === 'none') {
+                sidebar.style.display = 'block';
+            } else {
+                sidebar.style.display = 'none';
+            }
+        }
+        
+        function toggleProperties() {
+            const propertiesPanel = document.getElementById('properties_panel');
+            if (propertiesPanel.style.display === 'none') {
+                propertiesPanel.style.display = 'flex';
+            } else {
+                propertiesPanel.style.display = 'none';
+            }
+        }
+        
+        function resetLayout() {
+            document.getElementById('sidebar').style.display = 'block';
+            document.getElementById('properties_panel').style.display = 'flex';
+            alert('布局已重置');
+        }
+        
+        function importData() {
+            alert('导入数据功能正在开发中');
+        }
+        
+        function defineVariables() {
+            switchTab('variable_view');
+        }
+        
+        function transformData() {
+            alert('转换数据功能正在开发中');
+        }
+        
+        function cleanData() {
+            alert('数据清洗功能正在开发中');
+        }
+        
+        function showSettings() {
+            alert('设置功能正在开发中');
+        }
+        
+        function showHelp() {
+            alert('帮助文档正在开发中');
+        }
+        
+        function showTutorial() {
+            alert('教程正在开发中');
+        }
+        
+        function showAbout() {
+            alert('AxaltyX 版本 1.0.0\n专业统计分析软件\n版权所有 © 2026 TBJ114');
+        }
+        
+        function runAnalysis() {
+            alert('分析功能正在开发中');
+        }
+        
+        function clearOutput() {
+            document.getElementById('output_content').innerHTML = '<p style="text-align: center; color: #8c8c8c; margin-top: 40px;">输出将显示在这里</p>';
+        }
+        
+        // 初始化应用
+        window.onload = initApp;
+    </script>
+</body>
+</html>

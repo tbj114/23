@@ -793,6 +793,7 @@
     <script src="js/chartManager.js"></script>
     <script src="js/projectManager.js"></script>
     <script>
+        console.log('Script started');
         // 全局变量
         let dataManager = new DataManager();
         let statsAnalyzer = new StatsAnalyzer();
@@ -800,6 +801,7 @@
         let projectManager = new ProjectManager();
         let currentData = null;
         let currentTab = 'data_view';
+        console.log('Global variables initialized');
         
         // 初始化应用
         function initApp() {
@@ -963,7 +965,11 @@
             updateVariableViewFromData(sampleData);
             
             // 加载数据到Python统计引擎
-            statsAnalyzer.loadData(sampleData);
+            statsAnalyzer.loadData(sampleData).then(() => {
+                console.log('Data loaded to stats engine');
+            }).catch(error => {
+                console.error('Error loading data to stats engine:', error);
+            });
         }
         
         // 从数据更新表格
@@ -2025,7 +2031,11 @@
         }
         
         // 初始化应用
-        window.onload = initApp;
+        window.onload = function() {
+            console.log('Initializing app...');
+            initApp();
+            console.log('App initialized');
+        };
         
         // 接收来自主进程的菜单操作
         if (window.electronAPI) {
@@ -2041,3 +2051,6 @@
                 }
             });
         }
+    </script>
+</body>
+</html>
