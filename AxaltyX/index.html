@@ -1538,10 +1538,10 @@
                 alert('请先加载数据');
                 return;
             }
-            
+
             // 显示加载动画
             document.getElementById('analysis_content').innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
-            
+
             try {
                 // 模拟分析结果
                 setTimeout(() => {
@@ -1554,26 +1554,26 @@
                 document.getElementById('analysis_content').innerHTML = '<div class="message error">运行分析时出错</div>';
             }
         }
-        
+
         // 运行相关分析
         async function runCorrelationAnalysis() {
             if (!currentData) {
                 alert('请先加载数据');
                 return;
             }
-            
+
             const variables = Object.keys(currentData);
-            
+
             // 显示加载动画
             document.getElementById('analysis_content').innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
-            
+
             try {
                 // 调用统计分析器
                 const response = await statsAnalyzer.correlation(variables);
-                
+
                 if (response.status === 'success') {
                     const result = response.data;
-                    
+
                     // 显示结果
                     let html = '<h3>相关分析结果</h3>';
                     html += '<table style="width: 100%; border-collapse: collapse; margin-top: 16px;">';
@@ -1582,7 +1582,7 @@
                         html += `<th>${varName}</th>`;
                     });
                     html += '</tr>';
-                    
+
                     variables.forEach(var1 => {
                         html += `<tr><td>${var1}</td>`;
                         variables.forEach(var2 => {
@@ -1595,7 +1595,7 @@
                         html += '</tr>';
                     });
                     html += '</table>';
-                    
+
                     document.getElementById('analysis_content').innerHTML = html;
                     updateOutputView(html);
                 } else {
@@ -1606,17 +1606,17 @@
                 document.getElementById('analysis_content').innerHTML = '<div class="message error">运行分析时出错</div>';
             }
         }
-        
+
         // 运行回归分析
         async function runRegressionAnalysis() {
             if (!currentData) {
                 alert('请先加载数据');
                 return;
             }
-            
+
             // 显示加载动画
             document.getElementById('analysis_content').innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
-            
+
             try {
                 // 模拟分析结果
                 setTimeout(() => {
@@ -1629,17 +1629,17 @@
                 document.getElementById('analysis_content').innerHTML = '<div class="message error">运行分析时出错</div>';
             }
         }
-        
+
         // 运行方差分析
         async function runAnovaAnalysis() {
             if (!currentData) {
                 alert('请先加载数据');
                 return;
             }
-            
+
             // 显示加载动画
             document.getElementById('analysis_content').innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
-            
+
             try {
                 // 模拟分析结果
                 setTimeout(() => {
@@ -1652,17 +1652,17 @@
                 document.getElementById('analysis_content').innerHTML = '<div class="message error">运行分析时出错</div>';
             }
         }
-        
+
         // 运行非参数检验
         async function runNonparametricAnalysis() {
             if (!currentData) {
                 alert('请先加载数据');
                 return;
             }
-            
+
             // 显示加载动画
             document.getElementById('analysis_content').innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
-            
+
             try {
                 // 模拟分析结果
                 setTimeout(() => {
@@ -1675,17 +1675,17 @@
                 document.getElementById('analysis_content').innerHTML = '<div class="message error">运行分析时出错</div>';
             }
         }
-        
+
         // 运行生存分析
         async function runSurvivalAnalysis() {
             if (!currentData) {
                 alert('请先加载数据');
                 return;
             }
-            
+
             // 显示加载动画
             document.getElementById('analysis_content').innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
-            
+
             try {
                 // 模拟分析结果
                 setTimeout(() => {
@@ -1698,17 +1698,17 @@
                 document.getElementById('analysis_content').innerHTML = '<div class="message error">运行分析时出错</div>';
             }
         }
-        
+
         // 运行时间序列分析
         async function runTimeSeriesAnalysis() {
             if (!currentData) {
                 alert('请先加载数据');
                 return;
             }
-            
+
             // 显示加载动画
             document.getElementById('analysis_content').innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
-            
+
             try {
                 // 模拟分析结果
                 setTimeout(() => {
@@ -1721,17 +1721,17 @@
                 document.getElementById('analysis_content').innerHTML = '<div class="message error">运行分析时出错</div>';
             }
         }
-        
+
         // 运行机器学习分析
         async function runMachineLearningAnalysis() {
             if (!currentData) {
                 alert('请先加载数据');
                 return;
             }
-            
+
             // 显示加载动画
             document.getElementById('analysis_content').innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
-            
+
             try {
                 // 模拟分析结果
                 setTimeout(() => {
@@ -1744,23 +1744,23 @@
                 document.getElementById('analysis_content').innerHTML = '<div class="message error">运行分析时出错</div>';
             }
         }
-        
+
         // 生成图表
         function generateChart() {
             if (!currentData) {
                 alert('请先加载数据');
                 return;
             }
-            
+
             // 显示加载动画
             document.getElementById('analysis_content').innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
-            
+
             try {
                 // 模拟图表生成
                 setTimeout(() => {
                     const html = '<h3>图表</h3><div id="chart" style="height: 300px; width: 100%;"></div>';
                     document.getElementById('analysis_content').innerHTML = html;
-                    
+
                     // 初始化图表
                     const chart = echarts.init(document.getElementById('chart'));
                     const option = {
@@ -1784,7 +1784,7 @@
                         }]
                     };
                     chart.setOption(option);
-                    
+
                     // 更新输出视图
                     updateOutputView(html);
                 }, 1000);
@@ -1793,23 +1793,23 @@
                 document.getElementById('analysis_content').innerHTML = '<div class="message error">生成图表时出错</div>';
             }
         }
-        
+
         // 生成交互式可视化
         function generateInteractiveVisualization() {
             if (!currentData) {
                 alert('请先加载数据');
                 return;
             }
-            
+
             // 显示加载动画
             document.getElementById('analysis_content').innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
-            
+
             try {
                 // 模拟可视化生成
                 setTimeout(() => {
                     const html = '<h3>交互式可视化</h3><div id="interactive_chart" style="height: 300px; width: 100%;"></div>';
                     document.getElementById('analysis_content').innerHTML = html;
-                    
+
                     // 初始化图表
                     const chart = echarts.init(document.getElementById('interactive_chart'));
                     const option = {
@@ -1834,7 +1834,7 @@
                         }]
                     };
                     chart.setOption(option);
-                    
+
                     // 更新输出视图
                     updateOutputView(html);
                 }, 1000);
@@ -1843,17 +1843,17 @@
                 document.getElementById('analysis_content').innerHTML = '<div class="message error">生成可视化时出错</div>';
             }
         }
-        
+
         // 执行数据准备
         async function runDataPrep() {
             if (!currentData) {
                 alert('请先加载数据');
                 return;
             }
-            
+
             // 显示加载动画
             document.getElementById('analysis_content').innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
-            
+
             try {
                 // 模拟数据准备
                 setTimeout(() => {
@@ -1866,17 +1866,17 @@
                 document.getElementById('analysis_content').innerHTML = '<div class="message error">执行数据准备时出错</div>';
             }
         }
-        
+
         // 执行数据转换
         async function runTransform() {
             if (!currentData) {
                 alert('请先加载数据');
                 return;
             }
-            
+
             // 显示加载动画
             document.getElementById('analysis_content').innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
-            
+
             try {
                 // 模拟数据转换
                 setTimeout(() => {
@@ -1889,17 +1889,17 @@
                 document.getElementById('analysis_content').innerHTML = '<div class="message error">执行数据转换时出错</div>';
             }
         }
-        
+
         // 生成报告
         async function generateReport() {
             if (!currentData) {
                 alert('请先加载数据');
                 return;
             }
-            
+
             // 显示加载动画
             document.getElementById('analysis_content').innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
-            
+
             try {
                 // 模拟报告生成
                 setTimeout(() => {
@@ -1912,18 +1912,18 @@
                 document.getElementById('analysis_content').innerHTML = '<div class="message error">生成报告时出错</div>';
             }
         }
-        
+
         // 更新输出视图
         function updateOutputView(content) {
             const outputContent = document.getElementById('output_content');
             outputContent.innerHTML += `<div style="margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border);">${content}</div>`;
         }
-        
+
         // 清除输出
         function clearOutput() {
             document.getElementById('output_content').innerHTML = '<p style="text-align: center; color: var(--text-tertiary); margin-top: 40px;">输出将显示在这里</p>';
         }
-        
+
         // 菜单函数
         function newProject() {
             if (confirm('确定要新建项目吗？当前未保存的数据将会丢失。')) {
@@ -1933,39 +1933,39 @@
                 alert('新项目已创建');
             }
         }
-        
+
         function openProject() {
             alert('打开项目功能正在开发中');
         }
-        
+
         function saveProject() {
             const datasetName = document.getElementById('dataset_name').value;
             alert(`项目 "${datasetName}" 已保存`);
         }
-        
+
         function exportData() {
             alert('导出数据功能正在开发中');
         }
-        
+
         function exitApp() {
             if (confirm('确定要退出应用吗？')) {
                 // 在Electron环境中，这里会调用app.quit()
                 alert('应用将退出');
             }
         }
-        
+
         function cutData() {
             alert('剪切功能正在开发中');
         }
-        
+
         function copyData() {
             alert('复制功能正在开发中');
         }
-        
+
         function pasteData() {
             alert('粘贴功能正在开发中');
         }
-        
+
         function clearData() {
             if (confirm('确定要清除所有数据吗？')) {
                 createEmptyTable(100, 10);
@@ -1973,7 +1973,7 @@
                 alert('数据已清除');
             }
         }
-        
+
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             if (sidebar.style.display === 'none') {
@@ -1982,7 +1982,7 @@
                 sidebar.style.display = 'none';
             }
         }
-        
+
         function toggleProperties() {
             const propertiesPanel = document.getElementById('properties_panel');
             if (propertiesPanel.style.display === 'none') {
@@ -1991,52 +1991,52 @@
                 propertiesPanel.style.display = 'none';
             }
         }
-        
+
         function resetLayout() {
             document.getElementById('sidebar').style.display = 'block';
             document.getElementById('properties_panel').style.display = 'flex';
             alert('布局已重置');
         }
-        
+
         function importData() {
             alert('导入数据功能正在开发中');
         }
-        
+
         function defineVariables() {
             switchTab('variable_view');
         }
-        
+
         function transformData() {
             showAnalysis('transform');
         }
-        
+
         function cleanData() {
             showAnalysis('data_prep');
         }
-        
+
         function showSettings() {
             alert('设置功能正在开发中');
         }
-        
+
         function showHelp() {
             alert('帮助文档正在开发中');
         }
-        
+
         function showTutorial() {
             alert('教程正在开发中');
         }
-        
+
         function showAbout() {
             alert('AxaltyX 版本 1.0.0\n专业统计分析软件\n版权所有 © 2026 TBJ114');
         }
-        
+
         // 初始化应用
         window.onload = function() {
             console.log('Initializing app...');
             initApp();
             console.log('App initialized');
         };
-        
+
         // 接收来自主进程的菜单操作
         if (window.electronAPI) {
             window.electronAPI.onMenuAction((event, action) => {
