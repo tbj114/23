@@ -1083,6 +1083,14 @@
             switchTab('data_view');
         }
         
+        // 生成变量选项
+        function generateVariableOptions() {
+            if (!currentData) {
+                return '';
+            }
+            return Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('');
+        }
+        
         // 显示分析面板
         function showAnalysis(section) {
             const analysisPanel = document.getElementById('analysis_panel');
@@ -1099,7 +1107,7 @@
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">选择变量:</label>
                             <select multiple style="width: 100%; height: 120px;">
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <div style="margin-bottom: 16px;">
@@ -1122,13 +1130,13 @@
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">因变量:</label>
                             <select style="width: 100%;">
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">分组变量:</label>
                             <select style="width: 100%;">
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <button class="btn btn-primary" onclick="runCompareMeansAnalysis()">运行分析</button>
@@ -1140,7 +1148,7 @@
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">选择变量:</label>
                             <select multiple style="width: 100%; height: 120px;">
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <div style="margin-bottom: 16px;">
@@ -1160,13 +1168,13 @@
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">因变量:</label>
                             <select style="width: 100%;">
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">自变量:</label>
                             <select multiple style="width: 100%; height: 120px;">
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <div style="margin-bottom: 16px;">
@@ -1186,13 +1194,13 @@
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">因变量:</label>
                             <select style="width: 100%;">
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">固定因子:</label>
                             <select multiple style="width: 100%; height: 80px;">
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <div style="margin-bottom: 16px;">
@@ -1220,13 +1228,13 @@
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">因变量:</label>
                             <select style="width: 100%;">
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">分组变量:</label>
                             <select style="width: 100%;">
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <button class="btn btn-primary" onclick="runNonparametricAnalysis()">运行分析</button>
@@ -1238,20 +1246,20 @@
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">生存时间变量:</label>
                             <select style="width: 100%;">
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">事件变量:</label>
                             <select style="width: 100%;">
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">分组变量 (可选):</label>
                             <select style="width: 100%;">
                                 <option value="">无</option>
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <div style="margin-bottom: 16px;">
@@ -1270,7 +1278,7 @@
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">时间序列变量:</label>
                             <select style="width: 100%;">
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <div style="margin-bottom: 16px;">
@@ -1315,13 +1323,13 @@
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">因变量:</label>
                             <select style="width: 100%;">
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">自变量:</label>
                             <select multiple style="width: 100%; height: 120px;">
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <button class="btn btn-primary" onclick="runMachineLearningAnalysis()">运行分析</button>
@@ -1345,13 +1353,13 @@
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">X轴变量:</label>
                             <select style="width: 100%;">
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">Y轴变量:</label>
                             <select style="width: 100%;">
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <button class="btn btn-primary" onclick="generateChart()">生成图表</button>
@@ -1372,7 +1380,7 @@
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">变量:</label>
                             <select multiple style="width: 100%; height: 120px;">
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <button class="btn btn-primary" onclick="generateInteractiveVisualization()">生成可视化</button>
@@ -1393,7 +1401,7 @@
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">目标变量:</label>
                             <select multiple style="width: 100%; height: 120px;">
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <button class="btn btn-primary" onclick="runDataPrep()">执行操作</button>
@@ -1415,7 +1423,7 @@
                         <div style="margin-bottom: 16px;">
                             <label style="display: block; margin-bottom: 8px;">目标变量:</label>
                             <select multiple style="width: 100%; height: 120px;">
-                                ${currentData ? Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('') : ''}
+                                ${generateVariableOptions()}
                             </select>
                         </div>
                         <button class="btn btn-primary" onclick="runTransform()">执行转换</button>
@@ -2020,14 +2028,16 @@
         window.onload = initApp;
         
         // 接收来自主进程的菜单操作
-        window.electronAPI.onMenuAction((event, action) => {
-            console.log('Menu action:', action);
-            // 处理菜单操作
-            if (action === 'new-project') {
-                newProject();
-            } else if (action === 'open-project') {
-                openProject();
-            } else if (action === 'save-project') {
-                saveProject();
-            }
-        });
+        if (window.electronAPI) {
+            window.electronAPI.onMenuAction((event, action) => {
+                console.log('Menu action:', action);
+                // 处理菜单操作
+                if (action === 'new-project') {
+                    newProject();
+                } else if (action === 'open-project') {
+                    openProject();
+                } else if (action === 'save-project') {
+                    saveProject();
+                }
+            });
+        }
