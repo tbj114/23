@@ -11,10 +11,32 @@
             box-sizing: border-box;
         }
         
+        :root {
+            --primary: #1890ff;
+            --primary-light: #40a9ff;
+            --primary-dark: #096dd9;
+            --secondary: #722ed1;
+            --success: #52c41a;
+            --warning: #faad14;
+            --error: #ff4d4f;
+            --info: #13c2c2;
+            --text-primary: #262626;
+            --text-secondary: #595959;
+            --text-tertiary: #8c8c8c;
+            --background: #f5f5f5;
+            --card-bg: #ffffff;
+            --border: #e8e8e8;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+            --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
+            --border-radius: 8px;
+            --transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+        }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f0f2f5;
-            color: #333;
+            font-family: 'PingFang SC', 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.5;
         }
         
         .app-container {
@@ -26,40 +48,75 @@
         /* 左侧边栏 */
         .sidebar {
             width: 240px;
-            background-color: #fff;
-            border-right: 1px solid #e8e8e8;
-            padding: 20px;
+            background-color: var(--card-bg);
+            border-right: 1px solid var(--border);
+            padding: 24px;
             overflow-y: auto;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .sidebar-header {
+            margin-bottom: 32px;
+        }
+        
+        .sidebar-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .sidebar-logo::before {
+            content: "📊";
+            font-size: 28px;
+        }
+        
+        .sidebar-subtitle {
+            font-size: 14px;
+            color: var(--text-tertiary);
         }
         
         .sidebar-section {
-            margin-bottom: 30px;
+            margin-bottom: 32px;
         }
         
-        .sidebar-section h3 {
-            font-size: 14px;
+        .sidebar-section-title {
+            font-size: 12px;
             font-weight: 600;
-            color: #999;
-            margin-bottom: 10px;
+            color: var(--text-tertiary);
+            margin-bottom: 12px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .sidebar-item {
-            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
             margin-bottom: 4px;
-            border-radius: 4px;
+            border-radius: var(--border-radius);
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             font-size: 14px;
+            color: var(--text-secondary);
         }
         
         .sidebar-item:hover {
-            background-color: #f5f5f5;
+            background-color: rgba(24, 144, 255, 0.08);
+            color: var(--primary);
         }
         
         .sidebar-item.active {
-            background-color: #e6f7ff;
-            color: #1890ff;
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .sidebar-item-icon {
+            font-size: 18px;
         }
         
         /* 主工作区 */
@@ -72,277 +129,273 @@
         
         /* 顶部工具栏 */
         .toolbar {
-            height: 60px;
-            background-color: #fff;
-            border-bottom: 1px solid #e8e8e8;
+            height: 64px;
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
-            padding: 0 20px;
+            padding: 0 24px;
             justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
         
         .toolbar-left {
             display: flex;
             align-items: center;
+            gap: 24px;
         }
         
         .toolbar-title {
             font-size: 18px;
             font-weight: 600;
-            color: #333;
+            color: var(--text-primary);
+        }
+        
+        .toolbar-breadcrumb {
+            font-size: 14px;
+            color: var(--text-tertiary);
         }
         
         .toolbar-right {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
         
+        /* 按钮样式 */
         .btn {
-            padding: 6px 16px;
-            border: 1px solid #d9d9d9;
-            border-radius: 4px;
-            background-color: #fff;
+            padding: 8px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            background-color: var(--card-bg);
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             font-size: 14px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .btn:hover {
-            border-color: #1890ff;
-            color: #1890ff;
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(24, 144, 255, 0.1);
         }
         
         .btn-primary {
-            background-color: #1890ff;
-            border-color: #1890ff;
-            color: #fff;
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: white;
         }
         
         .btn-primary:hover {
-            background-color: #40a9ff;
-            border-color: #40a9ff;
-            color: #fff;
+            background-color: var(--primary-light);
+            border-color: var(--primary-light);
+            color: white;
+        }
+        
+        .btn-icon {
+            padding: 8px;
+            min-width: 36px;
+            justify-content: center;
         }
         
         /* 工作区域 */
         .workspace {
             flex: 1;
-            padding: 20px;
+            padding: 24px;
             overflow-y: auto;
-            background-color: #fafafa;
+            background-color: var(--background);
+        }
+        
+        /* 卡片样式 */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 24px;
+            margin-bottom: 24px;
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .card-header {
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        
+        .card-subtitle {
+            font-size: 14px;
+            color: var(--text-tertiary);
+        }
+        
+        /* 表单样式 */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            transition: var(--transition);
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+        }
+        
+        .form-control-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke-width='1.5' stroke='%23999' class='w-6 h-6'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' /%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 16px;
+            padding-right: 40px;
         }
         
         /* 数据表格 */
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            background-color: #fff;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
-            border-radius: 4px;
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
             overflow: hidden;
+            box-shadow: var(--shadow);
         }
         
         .data-table th,
         .data-table td {
-            padding: 12px;
+            padding: 16px;
             text-align: left;
-            border-bottom: 1px solid #e8e8e8;
+            border-bottom: 1px solid var(--border);
         }
         
         .data-table th {
             background-color: #fafafa;
             font-weight: 600;
-            color: #333;
+            color: var(--text-primary);
+            font-size: 14px;
         }
         
         .data-table tr:hover {
-            background-color: #f5f5f5;
-        }
-        
-        /* 右侧面板 */
-        .right-panel {
-            width: 300px;
-            background-color: #fff;
-            border-left: 1px solid #e8e8e8;
-            padding: 20px;
-            overflow-y: auto;
-        }
-        
-        .panel-section {
-            margin-bottom: 20px;
-        }
-        
-        .panel-section h3 {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            margin-bottom: 6px;
-            color: #666;
-        }
-        
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #d9d9d9;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-        
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-        
-        /* 欢迎页面 */
-        .welcome-page {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            text-align: center;
-        }
-        
-        .welcome-logo {
-            font-size: 48px;
-            font-weight: 700;
-            color: #1890ff;
-            margin-bottom: 20px;
-        }
-        
-        .welcome-title {
-            font-size: 24px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 10px;
-        }
-        
-        .welcome-subtitle {
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 40px;
-        }
-        
-        .welcome-actions {
-            display: flex;
-            gap: 20px;
-        }
-        
-        /* 加载动画 */
-        .loading {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 200px;
-        }
-        
-        .loading-spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #1890ff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            background-color: rgba(24, 144, 255, 0.05);
         }
         
         /* 分析结果 */
         .analysis-result {
-            background-color: #fff;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
-            border-radius: 4px;
-            padding: 20px;
-            margin-bottom: 20px;
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            margin-bottom: 24px;
         }
         
         .analysis-result h3 {
             font-size: 16px;
             font-weight: 600;
-            margin-bottom: 15px;
-            color: #333;
+            margin-bottom: 16px;
+            color: var(--text-primary);
         }
         
         .analysis-result table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            margin-top: 12px;
         }
         
         .analysis-result table th,
         .analysis-result table td {
-            padding: 8px;
+            padding: 12px;
             text-align: left;
-            border-bottom: 1px solid #e8e8e8;
+            border-bottom: 1px solid var(--border);
         }
         
         .analysis-result table th {
             background-color: #fafafa;
             font-weight: 600;
+            font-size: 14px;
         }
         
         /* 图表容器 */
         .chart-container {
-            background-color: #fff;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
-            border-radius: 4px;
-            padding: 20px;
-            margin-bottom: 20px;
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            padding: 24px;
+            margin-bottom: 24px;
         }
         
         .chart-container h3 {
             font-size: 16px;
             font-weight: 600;
-            margin-bottom: 15px;
-            color: #333;
+            margin-bottom: 16px;
+            color: var(--text-primary);
         }
         
-        .chart {}
+        .chart {
+            height: 400px;
+            width: 100%;
+        }
         
         /* 标签页 */
         .tabs {
             display: flex;
-            border-bottom: 1px solid #e8e8e8;
-            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 24px;
         }
         
         .tab {
-            padding: 10px 20px;
+            padding: 12px 24px;
             cursor: pointer;
             border-bottom: 2px solid transparent;
-            transition: all 0.3s;
+            transition: var(--transition);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-secondary);
         }
         
         .tab:hover {
-            color: #1890ff;
+            color: var(--primary);
         }
         
         .tab.active {
-            color: #1890ff;
-            border-bottom-color: #1890ff;
+            color: var(--primary);
+            border-bottom-color: var(--primary);
         }
         
         /* 消息提示 */
         .message {
-            padding: 10px 15px;
-            border-radius: 4px;
-            margin-bottom: 15px;
+            padding: 12px 16px;
+            border-radius: var(--border-radius);
+            margin-bottom: 16px;
             font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
         
         .message.success {
@@ -357,6 +410,106 @@
             color: #ff4d4f;
         }
         
+        .message.warning {
+            background-color: #fffbe6;
+            border: 1px solid #ffe58f;
+            color: #faad14;
+        }
+        
+        .message.info {
+            background-color: #e6f7ff;
+            border: 1px solid #91d5ff;
+            color: #1890ff;
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 右侧面板 */
+        .right-panel {
+            width: 300px;
+            background-color: var(--card-bg);
+            border-left: 1px solid var(--border);
+            padding: 24px;
+            overflow-y: auto;
+            box-shadow: -2px 0 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .panel-section {
+            margin-bottom: 24px;
+        }
+        
+        .panel-section h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+        
+        /* 欢迎页面 */
+        .welcome-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: 48px;
+        }
+        
+        .welcome-logo {
+            font-size: 64px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .welcome-logo::before {
+            content: "📊";
+            font-size: 72px;
+        }
+        
+        .welcome-title {
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+        
+        .welcome-subtitle {
+            font-size: 18px;
+            color: var(--text-tertiary);
+            margin-bottom: 48px;
+            max-width: 500px;
+        }
+        
+        .welcome-actions {
+            display: flex;
+            gap: 16px;
+        }
+        
         /* 响应式设计 */
         @media (max-width: 1200px) {
             .right-panel {
@@ -367,10 +520,38 @@
         @media (max-width: 992px) {
             .sidebar {
                 width: 200px;
+                padding: 16px;
             }
             
             .right-panel {
                 width: 200px;
+                padding: 16px;
+            }
+            
+            .workspace {
+                padding: 16px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                padding: 16px;
+            }
+            
+            .right-panel {
+                width: 100%;
+                height: auto;
+                border-left: none;
+                border-top: 1px solid var(--border);
+                padding: 16px;
             }
         }
     </style>
@@ -379,25 +560,93 @@
     <div class="app-container">
         <!-- 左侧边栏 -->
         <div class="sidebar">
-            <div class="sidebar-section">
-                <h3>数据集</h3>
-                <div class="sidebar-item active" data-section="data-management">当前数据集</div>
-                <div class="sidebar-item" data-section="variable-management">变量管理</div>
-                <div class="sidebar-item" data-section="data-import">数据导入</div>
-                <div class="sidebar-item" data-section="data-cleaning">数据清洗</div>
+            <div class="sidebar-header">
+                <div class="sidebar-logo">AxaltyX</div>
+                <div class="sidebar-subtitle">专业统计分析软件</div>
             </div>
+            
             <div class="sidebar-section">
-                <h3>分析</h3>
-                <div class="sidebar-item" data-section="descriptive-stats">描述性统计</div>
-                <div class="sidebar-item" data-section="hypothesis-test">假设检验</div>
-                <div class="sidebar-item" data-section="regression">回归分析</div>
-                <div class="sidebar-item" data-section="advanced-analysis">高级分析</div>
+                <div class="sidebar-section-title">数据集</div>
+                <div class="sidebar-item active" data-section="data-management">
+                    <span class="sidebar-item-icon">📁</span>
+                    <span>当前数据集</span>
+                </div>
+                <div class="sidebar-item" data-section="variable-management">
+                    <span class="sidebar-item-icon">🔧</span>
+                    <span>变量管理</span>
+                </div>
+                <div class="sidebar-item" data-section="data-import">
+                    <span class="sidebar-item-icon">📥</span>
+                    <span>数据导入</span>
+                </div>
+                <div class="sidebar-item" data-section="data-cleaning">
+                    <span class="sidebar-item-icon">🧹</span>
+                    <span>数据清洗</span>
+                </div>
             </div>
+            
             <div class="sidebar-section">
-                <h3>绘图</h3>
-                <div class="sidebar-item" data-section="basic-charts">基础图表</div>
-                <div class="sidebar-item" data-section="advanced-charts">高级图表</div>
-                <div class="sidebar-item" data-section="interactive-visualization">交互式可视化</div>
+                <div class="sidebar-section-title">分析</div>
+                <div class="sidebar-item" data-section="descriptive-stats">
+                    <span class="sidebar-item-icon">📊</span>
+                    <span>描述性统计</span>
+                </div>
+                <div class="sidebar-item" data-section="hypothesis-test">
+                    <span class="sidebar-item-icon">🔍</span>
+                    <span>假设检验</span>
+                </div>
+                <div class="sidebar-item" data-section="regression">
+                    <span class="sidebar-item-icon">📈</span>
+                    <span>回归分析</span>
+                </div>
+                <div class="sidebar-item" data-section="advanced-analysis">
+                    <span class="sidebar-item-icon">⚡</span>
+                    <span>高级分析</span>
+                </div>
+                <div class="sidebar-item" data-section="survival-analysis">
+                    <span class="sidebar-item-icon">⏰</span>
+                    <span>生存分析</span>
+                </div>
+                <div class="sidebar-item" data-section="time-series">
+                    <span class="sidebar-item-icon">📅</span>
+                    <span>时间序列分析</span>
+                </div>
+                <div class="sidebar-item" data-section="machine-learning">
+                    <span class="sidebar-item-icon">🤖</span>
+                    <span>机器学习</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">绘图</div>
+                <div class="sidebar-item" data-section="basic-charts">
+                    <span class="sidebar-item-icon">📉</span>
+                    <span>基础图表</span>
+                </div>
+                <div class="sidebar-item" data-section="advanced-charts">
+                    <span class="sidebar-item-icon">🎨</span>
+                    <span>高级图表</span>
+                </div>
+                <div class="sidebar-item" data-section="interactive-visualization">
+                    <span class="sidebar-item-icon">✨</span>
+                    <span>交互式可视化</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-section-title">工具</div>
+                <div class="sidebar-item" data-section="project-management">
+                    <span class="sidebar-item-icon">📋</span>
+                    <span>项目管理</span>
+                </div>
+                <div class="sidebar-item" data-section="report-generation">
+                    <span class="sidebar-item-icon">📄</span>
+                    <span>报告生成</span>
+                </div>
+                <div class="sidebar-item" data-section="settings">
+                    <span class="sidebar-item-icon">⚙️</span>
+                    <span>设置</span>
+                </div>
             </div>
         </div>
         
@@ -407,11 +656,21 @@
             <div class="toolbar">
                 <div class="toolbar-left">
                     <div class="toolbar-title" id="toolbar-title">数据管理</div>
+                    <div class="toolbar-breadcrumb" id="toolbar-breadcrumb">首页 / 数据管理</div>
                 </div>
                 <div class="toolbar-right">
-                    <button class="btn" id="import-btn">导入数据</button>
-                    <button class="btn" id="export-btn">导出数据</button>
-                    <button class="btn btn-primary" id="new-variable-btn">新建变量</button>
+                    <button class="btn btn-icon" title="导入数据">
+                        <span>📥</span>
+                    </button>
+                    <button class="btn btn-icon" title="导出数据">
+                        <span>📤</span>
+                    </button>
+                    <button class="btn btn-icon" title="新建变量">
+                        <span>+</span>
+                    </button>
+                    <button class="btn btn-primary">
+                        <span>保存</span>
+                    </button>
                 </div>
             </div>
             
@@ -422,7 +681,7 @@
                     <div class="welcome-page">
                         <div class="welcome-logo">AxaltyX</div>
                         <div class="welcome-title">专业统计分析软件</div>
-                        <div class="welcome-subtitle">为学术科研提供强大的数据分析能力</div>
+                        <div class="welcome-subtitle">为学术科研提供强大的数据分析能力，支持多种统计方法和可视化技术</div>
                         <div class="welcome-actions">
                             <button class="btn btn-primary" id="welcome-import-btn">导入数据</button>
                             <button class="btn" id="welcome-new-project-btn">新建项目</button>
@@ -430,153 +689,180 @@
                         </div>
                     </div>
                     <div id="data-table-container" style="display: none;">
-                        <table class="data-table" id="data-table">
-                            <thead id="table-header">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>姓名</th>
-                                    <th>年龄</th>
-                                    <th>性别</th>
-                                    <th>得分</th>
-                                </tr>
-                            </thead>
-                            <tbody id="table-body">
-                                <!-- 数据将通过JavaScript动态添加 -->
-                            </tbody>
-                        </table>
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="card-title">数据集</div>
+                                <div class="card-subtitle">查看和管理当前数据集</div>
+                            </div>
+                            <table class="data-table" id="data-table">
+                                <thead id="table-header">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>姓名</th>
+                                        <th>年龄</th>
+                                        <th>性别</th>
+                                        <th>得分</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-body">
+                                    <!-- 数据将通过JavaScript动态添加 -->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- 描述性统计 -->
                 <div id="descriptive-stats" class="section" style="display: none;">
-                    <div class="analysis-result">
-                        <h3>描述性统计</h3>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">描述性统计</div>
+                            <div class="card-subtitle">计算数据的基本统计量</div>
+                        </div>
                         <div class="form-group">
-                            <label>选择变量</label>
-                            <select id="stats-variables" multiple style="height: 100px;">
+                            <label class="form-label">选择变量</label>
+                            <select id="stats-variables" class="form-control form-control-select" multiple style="height: 120px;">
                                 <option value="age">年龄</option>
                                 <option value="score">得分</option>
                             </select>
                         </div>
                         <button class="btn btn-primary" id="calculate-stats-btn">计算统计量</button>
-                        <div id="stats-result" style="margin-top: 20px;"></div>
+                        <div id="stats-result" style="margin-top: 24px;"></div>
                     </div>
                 </div>
                 
                 <!-- 假设检验 -->
                 <div id="hypothesis-test" class="section" style="display: none;">
-                    <div class="tabs">
-                        <div class="tab active" data-test="t-test-one-sample">单样本t检验</div>
-                        <div class="tab" data-test="t-test-independent">独立样本t检验</div>
-                        <div class="tab" data-test="chi-square">卡方检验</div>
-                    </div>
-                    
-                    <!-- 单样本t检验 -->
-                    <div id="t-test-one-sample" class="test-panel active">
-                        <div class="form-group">
-                            <label>选择变量</label>
-                            <select id="t-test-variable">
-                                <option value="age">年龄</option>
-                                <option value="score">得分</option>
-                            </select>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">假设检验</div>
+                            <div class="card-subtitle">执行各种统计假设检验</div>
                         </div>
-                        <div class="form-group">
-                            <label>总体均值</label>
-                            <input type="number" id="population-mean" value="25">
+                        <div class="tabs">
+                            <div class="tab active" data-test="t-test-one-sample">单样本t检验</div>
+                            <div class="tab" data-test="t-test-independent">独立样本t检验</div>
+                            <div class="tab" data-test="chi-square">卡方检验</div>
                         </div>
-                        <button class="btn btn-primary" id="run-t-test-btn">运行检验</button>
-                        <div id="t-test-result" style="margin-top: 20px;"></div>
-                    </div>
-                    
-                    <!-- 独立样本t检验 -->
-                    <div id="t-test-independent" class="test-panel" style="display: none;">
-                        <div class="form-group">
-                            <label>因变量</label>
-                            <select id="indep-dependent">
-                                <option value="score">得分</option>
-                            </select>
+                        
+                        <!-- 单样本t检验 -->
+                        <div id="t-test-one-sample" class="test-panel active">
+                            <div class="form-group">
+                                <label class="form-label">选择变量</label>
+                                <select id="t-test-variable" class="form-control form-control-select">
+                                    <option value="age">年龄</option>
+                                    <option value="score">得分</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">总体均值</label>
+                                <input type="number" id="population-mean" class="form-control" value="25">
+                            </div>
+                            <button class="btn btn-primary" id="run-t-test-btn">运行检验</button>
+                            <div id="t-test-result" style="margin-top: 24px;"></div>
                         </div>
-                        <div class="form-group">
-                            <label>分组变量</label>
-                            <select id="indep-group">
-                                <option value="gender">性别</option>
-                                <option value="group">组别</option>
-                            </select>
+                        
+                        <!-- 独立样本t检验 -->
+                        <div id="t-test-independent" class="test-panel" style="display: none;">
+                            <div class="form-group">
+                                <label class="form-label">因变量</label>
+                                <select id="indep-dependent" class="form-control form-control-select">
+                                    <option value="score">得分</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">分组变量</label>
+                                <select id="indep-group" class="form-control form-control-select">
+                                    <option value="gender">性别</option>
+                                    <option value="group">组别</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" id="run-indep-t-test-btn">运行检验</button>
+                            <div id="indep-t-test-result" style="margin-top: 24px;"></div>
                         </div>
-                        <button class="btn btn-primary" id="run-indep-t-test-btn">运行检验</button>
-                        <div id="indep-t-test-result" style="margin-top: 20px;"></div>
-                    </div>
-                    
-                    <!-- 卡方检验 -->
-                    <div id="chi-square" class="test-panel" style="display: none;">
-                        <div class="form-group">
-                            <label>变量1</label>
-                            <select id="chi-variable1">
-                                <option value="gender">性别</option>
-                                <option value="group">组别</option>
-                            </select>
+                        
+                        <!-- 卡方检验 -->
+                        <div id="chi-square" class="test-panel" style="display: none;">
+                            <div class="form-group">
+                                <label class="form-label">变量1</label>
+                                <select id="chi-variable1" class="form-control form-control-select">
+                                    <option value="gender">性别</option>
+                                    <option value="group">组别</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">变量2</label>
+                                <select id="chi-variable2" class="form-control form-control-select">
+                                    <option value="group">组别</option>
+                                    <option value="gender">性别</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" id="run-chi-test-btn">运行检验</button>
+                            <div id="chi-test-result" style="margin-top: 24px;"></div>
                         </div>
-                        <div class="form-group">
-                            <label>变量2</label>
-                            <select id="chi-variable2">
-                                <option value="group">组别</option>
-                                <option value="gender">性别</option>
-                            </select>
-                        </div>
-                        <button class="btn btn-primary" id="run-chi-test-btn">运行检验</button>
-                        <div id="chi-test-result" style="margin-top: 20px;"></div>
                     </div>
                 </div>
                 
                 <!-- 回归分析 -->
                 <div id="regression" class="section" style="display: none;">
-                    <div class="form-group">
-                        <label>因变量</label>
-                        <select id="regression-dependent">
-                            <option value="score">得分</option>
-                        </select>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">回归分析</div>
+                            <div class="card-subtitle">执行各种回归分析</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">因变量</label>
+                            <select id="regression-dependent" class="form-control form-control-select">
+                                <option value="score">得分</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">自变量</label>
+                            <select id="regression-independents" class="form-control form-control-select" multiple style="height: 120px;">
+                                <option value="age">年龄</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" id="run-regression-btn">运行回归</button>
+                        <div id="regression-result" style="margin-top: 24px;"></div>
                     </div>
-                    <div class="form-group">
-                        <label>自变量</label>
-                        <select id="regression-independents" multiple style="height: 100px;">
-                            <option value="age">年龄</option>
-                        </select>
-                    </div>
-                    <button class="btn btn-primary" id="run-regression-btn">运行回归</button>
-                    <div id="regression-result" style="margin-top: 20px;"></div>
                 </div>
                 
                 <!-- 基础图表 -->
                 <div id="basic-charts" class="section" style="display: none;">
-                    <div class="form-group">
-                        <label>图表类型</label>
-                        <select id="chart-type">
-                            <option value="bar">条形图</option>
-                            <option value="line">折线图</option>
-                            <option value="scatter">散点图</option>
-                            <option value="histogram">直方图</option>
-                            <option value="pie">饼图</option>
-                            <option value="box">箱线图</option>
-                        </select>
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">基础图表</div>
+                            <div class="card-subtitle">创建各种基础图表</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">图表类型</label>
+                            <select id="chart-type" class="form-control form-control-select">
+                                <option value="bar">条形图</option>
+                                <option value="line">折线图</option>
+                                <option value="scatter">散点图</option>
+                                <option value="histogram">直方图</option>
+                                <option value="pie">饼图</option>
+                                <option value="box">箱线图</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">X轴变量</label>
+                            <select id="x-variable" class="form-control form-control-select">
+                                <option value="age">年龄</option>
+                                <option value="gender">性别</option>
+                                <option value="group">组别</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Y轴变量</label>
+                            <select id="y-variable" class="form-control form-control-select">
+                                <option value="score">得分</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" id="generate-chart-btn">生成图表</button>
                     </div>
-                    <div class="form-group">
-                        <label>X轴变量</label>
-                        <select id="x-variable">
-                            <option value="age">年龄</option>
-                            <option value="gender">性别</option>
-                            <option value="group">组别</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Y轴变量</label>
-                        <select id="y-variable">
-                            <option value="score">得分</option>
-                        </select>
-                    </div>
-                    <button class="btn btn-primary" id="generate-chart-btn">生成图表</button>
-                    <div class="chart-container" style="margin-top: 20px;">
+                    <div class="chart-container" style="margin-top: 24px;">
                         <h3>图表</h3>
-                        <div id="chart" class="chart" style="height: 400px;"></div>
+                        <div id="chart" class="chart"></div>
                     </div>
                 </div>
             </div>
@@ -587,27 +873,43 @@
             <div class="panel-section">
                 <h3>数据集信息</h3>
                 <div class="form-group">
-                    <label>数据集名称</label>
-                    <input type="text" id="dataset-name" value="未命名数据集">
+                    <label class="form-label">数据集名称</label>
+                    <input type="text" id="dataset-name" class="form-control" value="未命名数据集">
                 </div>
                 <div class="form-group">
-                    <label>变量数量</label>
-                    <input type="text" id="variable-count" value="0" disabled>
+                    <label class="form-label">变量数量</label>
+                    <input type="text" id="variable-count" class="form-control" value="0" disabled>
                 </div>
                 <div class="form-group">
-                    <label>观测数量</label>
-                    <input type="text" id="observation-count" value="0" disabled>
+                    <label class="form-label">观测数量</label>
+                    <input type="text" id="observation-count" class="form-control" value="0" disabled>
                 </div>
             </div>
             <div class="panel-section">
                 <h3>操作</h3>
-                <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" id="save-dataset-btn">保存数据集</button>
+                <button class="btn btn-primary" style="width: 100%; margin-bottom: 12px;" id="save-dataset-btn">保存数据集</button>
                 <button class="btn" style="width: 100%;" id="clear-data-btn">清除数据</button>
             </div>
             <div class="panel-section">
                 <h3>Python服务器状态</h3>
                 <div id="server-status" class="message success">
-                    服务器运行中
+                    <span>🟢</span>
+                    <span>服务器运行中</span>
+                </div>
+            </div>
+            <div class="panel-section">
+                <h3>快速操作</h3>
+                <div class="sidebar-item" style="margin-bottom: 8px;" onclick="loadSampleData()">
+                    <span class="sidebar-item-icon">📊</span>
+                    <span>加载示例数据</span>
+                </div>
+                <div class="sidebar-item" style="margin-bottom: 8px;">
+                    <span class="sidebar-item-icon">🧹</span>
+                    <span>清洗数据</span>
+                </div>
+                <div class="sidebar-item">
+                    <span class="sidebar-item-icon">📈</span>
+                    <span>快速分析</span>
                 </div>
             </div>
         </div>
@@ -641,10 +943,13 @@
                 
                 // 显示对应的section
                 const sectionId = this.getAttribute('data-section');
-                document.getElementById(sectionId).style.display = 'block';
-                
-                // 更新工具栏标题
-                document.getElementById('toolbar-title').textContent = this.textContent;
+                if (sectionId) {
+                    document.getElementById(sectionId).style.display = 'block';
+                    
+                    // 更新工具栏标题和面包屑
+                    document.getElementById('toolbar-title').textContent = this.textContent;
+                    document.getElementById('toolbar-breadcrumb').textContent = `首页 / ${this.textContent}`;
+                }
             });
         });
         
@@ -738,7 +1043,6 @@
         
         // 事件监听器
         document.getElementById('welcome-import-btn').addEventListener('click', loadSampleData);
-        document.getElementById('import-btn').addEventListener('click', loadSampleData);
         document.getElementById('welcome-open-example-btn').addEventListener('click', loadSampleData);
         
         // 计算描述性统计
@@ -762,7 +1066,9 @@
                     const result = response.data;
                     
                     // 显示结果
-                    let html = '<table>';
+                    let html = '<div class="analysis-result">';
+                    html += '<h3>描述性统计结果</h3>';
+                    html += '<table>';
                     html += '<tr><th>统计量</th>';
                     selectedVariables.forEach(varName => {
                         html += `<th>${varName}</th>`;
@@ -778,14 +1084,15 @@
                         html += '</tr>';
                     });
                     html += '</table>';
+                    html += '</div>';
                     
                     document.getElementById('stats-result').innerHTML = html;
                 } else {
-                    document.getElementById('stats-result').innerHTML = `<div class="message error">${response.message}</div>`;
+                    document.getElementById('stats-result').innerHTML = `<div class="message error"><span>❌</span><span>${response.message}</span></div>`;
                 }
             } catch (error) {
                 console.error('Error calculating descriptive stats:', error);
-                document.getElementById('stats-result').innerHTML = '<div class="message error">计算统计量时出错</div>';
+                document.getElementById('stats-result').innerHTML = '<div class="message error"><span>❌</span><span>计算统计量时出错</span></div>';
             }
         });
         
@@ -806,20 +1113,22 @@
                     
                     // 显示结果
                     let html = '<div class="analysis-result">';
-                    html += '<h4>单样本t检验结果</h4>';
-                    html += `<p>t统计量: ${result.t_statistic.toFixed(4)}</p>`;
-                    html += `<p>自由度: ${result.df}</p>`;
-                    html += `<p>p值: ${result.p_value.toFixed(4)}</p>`;
-                    html += `<p>结论: ${result.p_value > 0.05 ? '接受原假设' : '拒绝原假设'}</p>`;
+                    html += '<h3>单样本t检验结果</h3>';
+                    html += `<p><strong>t统计量:</strong> ${result.t_statistic.toFixed(4)}</p>`;
+                    html += `<p><strong>自由度:</strong> ${result.df}</p>`;
+                    html += `<p><strong>p值:</strong> ${result.p_value.toFixed(4)}</p>`;
+                    html += `<p><strong>均值:</strong> ${result.mean.toFixed(2)}</p>`;
+                    html += `<p><strong>标准差:</strong> ${result.std.toFixed(2)}</p>`;
+                    html += `<p><strong>结论:</strong> ${result.p_value > 0.05 ? '接受原假设' : '拒绝原假设'}</p>`;
                     html += '</div>';
                     
                     document.getElementById('t-test-result').innerHTML = html;
                 } else {
-                    document.getElementById('t-test-result').innerHTML = `<div class="message error">${response.message}</div>`;
+                    document.getElementById('t-test-result').innerHTML = `<div class="message error"><span>❌</span><span>${response.message}</span></div>`;
                 }
             } catch (error) {
                 console.error('Error running t-test:', error);
-                document.getElementById('t-test-result').innerHTML = '<div class="message error">运行t检验时出错</div>';
+                document.getElementById('t-test-result').innerHTML = '<div class="message error"><span>❌</span><span>运行t检验时出错</span></div>';
             }
         });
         
@@ -840,26 +1149,26 @@
                     
                     // 显示结果
                     let html = '<div class="analysis-result">';
-                    html += '<h4>独立样本t检验结果</h4>';
-                    html += `<p>t统计量: ${result.t_statistic.toFixed(4)}</p>`;
-                    html += `<p>自由度: ${result.df}</p>`;
-                    html += `<p>p值: ${result.p_value.toFixed(4)}</p>`;
-                    html += '<h5>组别均值</h5>';
+                    html += '<h3>独立样本t检验结果</h3>';
+                    html += `<p><strong>t统计量:</strong> ${result.t_statistic.toFixed(4)}</p>`;
+                    html += `<p><strong>自由度:</strong> ${result.df}</p>`;
+                    html += `<p><strong>p值:</strong> ${result.p_value.toFixed(4)}</p>`;
+                    html += '<h4>组别均值</h4>';
                     html += '<table>';
                     Object.entries(result.group_means).forEach(([group, mean]) => {
                         html += `<tr><td>${group}</td><td>${mean.toFixed(2)}</td></tr>`;
                     });
                     html += '</table>';
-                    html += `<p>结论: ${result.p_value > 0.05 ? '接受原假设' : '拒绝原假设'}</p>`;
+                    html += `<p><strong>结论:</strong> ${result.p_value > 0.05 ? '接受原假设' : '拒绝原假设'}</p>`;
                     html += '</div>';
                     
                     document.getElementById('indep-t-test-result').innerHTML = html;
                 } else {
-                    document.getElementById('indep-t-test-result').innerHTML = `<div class="message error">${response.message}</div>`;
+                    document.getElementById('indep-t-test-result').innerHTML = `<div class="message error"><span>❌</span><span>${response.message}</span></div>`;
                 }
             } catch (error) {
                 console.error('Error running independent t-test:', error);
-                document.getElementById('indep-t-test-result').innerHTML = '<div class="message error">运行独立样本t检验时出错</div>';
+                document.getElementById('indep-t-test-result').innerHTML = '<div class="message error"><span>❌</span><span>运行独立样本t检验时出错</span></div>';
             }
         });
         
@@ -880,20 +1189,20 @@
                     
                     // 显示结果
                     let html = '<div class="analysis-result">';
-                    html += '<h4>卡方检验结果</h4>';
-                    html += `<p>卡方统计量: ${result.chi2_statistic.toFixed(4)}</p>`;
-                    html += `<p>自由度: ${result.df}</p>`;
-                    html += `<p>p值: ${result.p_value.toFixed(4)}</p>`;
-                    html += `<p>结论: ${result.p_value > 0.05 ? '接受原假设' : '拒绝原假设'}</p>`;
+                    html += '<h3>卡方检验结果</h3>';
+                    html += `<p><strong>卡方统计量:</strong> ${result.chi2_statistic.toFixed(4)}</p>`;
+                    html += `<p><strong>自由度:</strong> ${result.df}</p>`;
+                    html += `<p><strong>p值:</strong> ${result.p_value.toFixed(4)}</p>`;
+                    html += `<p><strong>结论:</strong> ${result.p_value > 0.05 ? '接受原假设' : '拒绝原假设'}</p>`;
                     html += '</div>';
                     
                     document.getElementById('chi-test-result').innerHTML = html;
                 } else {
-                    document.getElementById('chi-test-result').innerHTML = `<div class="message error">${response.message}</div>`;
+                    document.getElementById('chi-test-result').innerHTML = `<div class="message error"><span>❌</span><span>${response.message}</span></div>`;
                 }
             } catch (error) {
                 console.error('Error running chi-square test:', error);
-                document.getElementById('chi-test-result').innerHTML = '<div class="message error">运行卡方检验时出错</div>';
+                document.getElementById('chi-test-result').innerHTML = '<div class="message error"><span>❌</span><span>运行卡方检验时出错</span></div>';
             }
         });
         
@@ -920,24 +1229,25 @@
                     
                     // 显示结果
                     let html = '<div class="analysis-result">';
-                    html += '<h4>线性回归结果</h4>';
-                    html += '<h5>系数</h5>';
+                    html += '<h3>线性回归结果</h3>';
+                    html += '<h4>系数</h4>';
                     html += '<table>';
                     Object.entries(result.coefficients).forEach(([varName, coef]) => {
                         html += `<tr><td>${varName}</td><td>${coef.toFixed(4)}</td></tr>`;
                     });
                     html += `<tr><td>截距</td><td>${result.intercept.toFixed(4)}</td></tr>`;
                     html += '</table>';
-                    html += `<p>R²: ${result.r_squared.toFixed(4)}</p>`;
+                    html += `<p><strong>R²:</strong> ${result.r_squared.toFixed(4)}</p>`;
+                    html += `<p><strong>样本数:</strong> ${result.n_samples}</p>`;
                     html += '</div>';
                     
                     document.getElementById('regression-result').innerHTML = html;
                 } else {
-                    document.getElementById('regression-result').innerHTML = `<div class="message error">${response.message}</div>`;
+                    document.getElementById('regression-result').innerHTML = `<div class="message error"><span>❌</span><span>${response.message}</span></div>`;
                 }
             } catch (error) {
                 console.error('Error running regression:', error);
-                document.getElementById('regression-result').innerHTML = '<div class="message error">运行回归分析时出错</div>';
+                document.getElementById('regression-result').innerHTML = '<div class="message error"><span>❌</span><span>运行回归分析时出错</span></div>';
             }
         });
         
