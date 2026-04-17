@@ -10,826 +10,1034 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         :root {
             --primary: #1890ff;
-            --primary-light: #40a9ff;
-            --primary-dark: #096dd9;
-            --secondary: #722ed1;
+            --primary-hover: #40a9ff;
+            --primary-active: #096dd9;
             --success: #52c41a;
             --warning: #faad14;
             --error: #ff4d4f;
-            --info: #13c2c2;
             --text-primary: #262626;
             --text-secondary: #595959;
             --text-tertiary: #8c8c8c;
-            --background: #f0f2f5;
-            --card-bg: #ffffff;
-            --border: #d9d9d9;
+            --bg-primary: #ffffff;
+            --bg-secondary: #fafafa;
+            --bg-tertiary: #f5f5f5;
+            --border: #e8e8e8;
+            --border-light: #f0f0f0;
             --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
             --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.12);
-            --border-radius: 6px;
-            --transition: all 0.2s ease;
+            --radius: 4px;
+            --radius-sm: 2px;
+            --radius-lg: 8px;
+            --transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
         }
-        
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-            background-color: var(--background);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: var(--bg-tertiary);
             color: var(--text-primary);
-            line-height: 1.6;
+            line-height: 1.5715;
+            font-size: 14px;
         }
-        
+
         .app-container {
             display: flex;
             flex-direction: column;
             height: 100vh;
             overflow: hidden;
         }
-        
-        /* 顶部菜单栏 */
+
+        /* 顶部菜单栏 - SPSS风格 */
         .menu-bar {
-            background-color: #001529;
-            padding: 0 24px;
+            height: 30px;
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 56px;
+            align-items: stretch;
+            padding: 0 8px;
+            font-size: 13px;
         }
-        
-        .menu-bar-left {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-        
-        .logo {
-            font-size: 20px;
-            font-weight: 700;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .logo::before {
-            content: "📊";
-            font-size: 24px;
-        }
-        
-        .menu-items {
-            display: flex;
-            gap: 4px;
-        }
-        
+
         .menu-item {
             position: relative;
-        }
-        
-        .menu-item > button {
-            background: transparent;
-            border: none;
-            color: rgba(255, 255, 255, 0.85);
-            padding: 8px 16px;
-            font-size: 14px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
             cursor: pointer;
-            border-radius: var(--border-radius);
+            color: var(--text-primary);
             transition: var(--transition);
+            user-select: none;
         }
-        
-        .menu-item > button:hover {
-            background-color: rgba(255, 255, 255, 0.1);
+
+        .menu-item:hover {
+            background-color: var(--primary);
             color: white;
         }
-        
+
+        .menu-item.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
         .submenu {
             position: absolute;
             top: 100%;
             left: 0;
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-hover);
-            min-width: 180px;
-            padding: 8px 0;
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            z-index: 10000;
+            min-width: 220px;
             display: none;
-            z-index: 1000;
-            margin-top: 4px;
+            padding: 4px 0;
         }
-        
-        .menu-item:hover .submenu {
+
+        .menu-item:hover .submenu,
+        .menu-item.active .submenu {
             display: block;
         }
-        
+
         .submenu-item {
-            display: block;
-            width: 100%;
-            padding: 10px 20px;
-            background: transparent;
-            border: none;
-            color: var(--text-primary);
-            font-size: 14px;
+            padding: 6px 24px;
             cursor: pointer;
-            text-align: left;
+            font-size: 13px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             transition: var(--transition);
         }
-        
+
         .submenu-item:hover {
-            background-color: var(--background);
-            color: var(--primary);
+            background-color: var(--bg-tertiary);
         }
-        
+
+        .submenu-item.disabled {
+            color: var(--text-tertiary);
+            cursor: not-allowed;
+        }
+
         .submenu-divider {
             height: 1px;
-            background-color: var(--border);
-            margin: 8px 0;
+            background-color: var(--border-light);
+            margin: 4px 0;
         }
-        
+
+        .submenu-has-sub::after {
+            content: '▶';
+            font-size: 10px;
+            color: var(--text-tertiary);
+        }
+
         /* 工具栏 */
         .toolbar {
-            background-color: var(--card-bg);
-            padding: 12px 24px;
+            height: 40px;
+            background-color: var(--bg-primary);
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
-            gap: 16px;
+            padding: 0 12px;
+            gap: 4px;
         }
-        
+
         .tool-group {
             display: flex;
-            gap: 8px;
-            padding-right: 16px;
-            border-right: 1px solid var(--border);
+            align-items: center;
+            gap: 4px;
+            padding: 0 8px;
+            border-right: 1px solid var(--border-light);
         }
-        
+
         .tool-group:last-child {
             border-right: none;
         }
-        
+
         .tool-btn {
+            padding: 6px 12px;
+            border: 1px solid transparent;
+            border-radius: var(--radius-sm);
+            background-color: transparent;
+            cursor: pointer;
+            font-size: 12px;
+            color: var(--text-primary);
+            transition: var(--transition);
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: var(--border-radius);
-            color: var(--text-primary);
-            font-size: 14px;
-            cursor: pointer;
-            transition: var(--transition);
+            gap: 4px;
         }
-        
+
         .tool-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
+            background-color: var(--bg-tertiary);
+            border-color: var(--border);
         }
-        
-        .tool-btn.primary {
-            background-color: var(--primary);
-            border-color: var(--primary);
-            color: white;
+
+        .tool-btn:active {
+            background-color: var(--border-light);
         }
-        
-        .tool-btn.primary:hover {
-            background-color: var(--primary-light);
-            border-color: var(--primary-light);
-        }
-        
+
         /* 主工作区 */
         .main-workspace {
             flex: 1;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            padding: 24px;
-            gap: 24px;
         }
-        
+
         /* 标签页 */
         .tabs {
+            height: 34px;
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
             display: flex;
-            gap: 8px;
-            background-color: var(--card-bg);
-            padding: 8px;
-            border-radius: var(--border-radius);
-            width: fit-content;
+            align-items: flex-end;
+            padding: 0 12px;
+            gap: 4px;
         }
-        
+
         .tab {
-            padding: 8px 20px;
-            background: transparent;
-            border: none;
-            border-radius: var(--border-radius);
-            color: var(--text-secondary);
-            font-size: 14px;
+            padding: 6px 16px;
+            border: 1px solid var(--border);
+            border-bottom: none;
+            border-radius: var(--radius) var(--radius) 0 0;
+            background-color: var(--bg-tertiary);
             cursor: pointer;
+            font-size: 13px;
+            color: var(--text-secondary);
             transition: var(--transition);
+            position: relative;
+            bottom: -1px;
         }
-        
+
         .tab:hover {
-            color: var(--text-primary);
+            background-color: var(--bg-secondary);
         }
-        
+
         .tab.active {
-            background-color: var(--primary);
-            color: white;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--bg-primary);
+            font-weight: 500;
         }
-        
-        /* 数据表格区域 */
+
+        /* 数据区域 */
         .data-area {
             flex: 1;
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .data-table-container {
-            flex: 1;
+            background-color: var(--bg-primary);
             overflow: auto;
-            padding: 20px;
+            position: relative;
         }
-        
-        /* 专业数据表格 */
+
+        .tab-content {
+            display: none;
+            height: 100%;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 数据表格 - 修复行标签溢出 */
+        .data-table-container {
+            padding: 0;
+            height: 100%;
+            overflow: auto;
+        }
+
         .data-table {
-            border-collapse: separate;
-            border-spacing: 0;
-            font-size: 13px;
-            background-color: white;
+            width: auto;
+            border-collapse: collapse;
+            font-size: 12px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            table-layout: fixed;
         }
-        
+
         .data-table th,
         .data-table td {
-            padding: 8px 12px;
+            padding: 2px 6px;
             border: 1px solid var(--border);
             text-align: center;
-            min-width: 100px;
-            max-width: 200px;
-            height: 32px;
-            white-space: nowrap;
+            min-width: 60px;
+            max-width: 150px;
+            height: 22px;
             overflow: hidden;
             text-overflow: ellipsis;
+            white-space: nowrap;
+            vertical-align: middle;
         }
-        
+
         .data-table th {
-            background-color: #fafafa;
-            font-weight: 600;
-            color: var(--text-secondary);
+            background-color: var(--bg-secondary);
+            font-weight: 500;
             position: sticky;
             top: 0;
             z-index: 20;
-        }
-        
-        .data-table .row-header {
-            background-color: #fafafa;
-            font-weight: 600;
             color: var(--text-secondary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        .data-table .row-header {
+            background-color: var(--bg-secondary);
+            font-weight: 500;
             position: sticky;
             left: 0;
             z-index: 10;
-            min-width: 60px;
-            max-width: 100px;
+            min-width: 50px;
+            max-width: 80px;
+            color: var(--text-secondary);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
         }
-        
+
+        .data-table th.row-header {
+            z-index: 30;
+        }
+
         .data-table td {
             background-color: white;
         }
-        
+
         .data-table td:hover {
-            background-color: rgba(24, 144, 255, 0.05);
+            background-color: rgba(24, 144, 255, 0.08);
         }
-        
+
+        .data-table td.selected {
+            background-color: rgba(24, 144, 255, 0.15);
+            border-color: var(--primary);
+        }
+
         .data-table input {
             width: 100%;
+            height: 100%;
             border: none;
             background: transparent;
-            font-size: 13px;
-            padding: 4px;
+            font-size: 12px;
+            padding: 0;
             outline: none;
-            text-align: center;
+            text-align: inherit;
+            font-family: inherit;
         }
-        
+
         .data-table input:focus {
-            background-color: rgba(24, 144, 255, 0.1);
-            border-radius: 4px;
+            background-color: white;
         }
-        
-        /* 右侧属性面板 */
-        .properties-panel {
-            width: 300px;
-            background-color: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 20px;
+
+        /* 变量视图表格 */
+        .variable-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .variable-table th,
+        .variable-table td {
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .variable-table th {
+            background-color: var(--bg-secondary);
+            font-weight: 500;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .variable-table input,
+        .variable-table select {
+            width: 100%;
+            padding: 4px 8px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+        }
+
+        .variable-table input:focus,
+        .variable-table select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+        }
+
+        /* 输出视图 */
+        .output-container {
+            padding: 16px;
+            height: 100%;
+            overflow-y: auto;
+            background-color: var(--bg-secondary);
+        }
+
+        .output-item {
+            margin-bottom: 24px;
+            padding: 16px;
+            background-color: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+
+        .output-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .output-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+
+        .output-table th,
+        .output-table td {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            text-align: left;
+        }
+
+        .output-table th {
+            background-color: var(--bg-secondary);
+            font-weight: 500;
+        }
+
+        /* 分析对话框 */
+        .analysis-dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
             display: none;
-            flex-direction: column;
-            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            z-index: 20000;
         }
-        
-        .properties-panel.active {
+
+        .analysis-dialog-overlay.active {
             display: flex;
         }
-        
-        .properties-header {
+
+        .analysis-dialog {
+            background-color: white;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16);
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dialog-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .dialog-title {
             font-size: 16px;
             font-weight: 600;
             color: var(--text-primary);
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border);
         }
-        
-        .property-group {
+
+        .dialog-close {
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: var(--text-tertiary);
+            transition: var(--transition);
+        }
+
+        .dialog-close:hover {
+            background-color: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .dialog-content {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .dialog-footer {
+            padding: 16px 20px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .form-group {
             margin-bottom: 20px;
         }
-        
-        .property-group-title {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-tertiary);
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .property-item {
-            margin-bottom: 16px;
-        }
-        
-        .property-label {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-bottom: 6px;
+
+        .form-label {
             display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
         }
-        
-        .property-input {
+
+        .form-control {
             width: 100%;
             padding: 8px 12px;
             border: 1px solid var(--border);
-            border-radius: var(--border-radius);
+            border-radius: var(--radius);
             font-size: 14px;
             transition: var(--transition);
         }
-        
-        .property-input:focus {
+
+        .form-control:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
         }
-        
-        .property-input:disabled {
-            background-color: #f5f5f5;
-            cursor: not-allowed;
-        }
-        
-        /* 状态栏 */
-        .status-bar {
-            background-color: var(--card-bg);
-            border-top: 1px solid var(--border);
-            padding: 8px 24px;
-            display: flex;
-            align-items: center;
-            gap: 32px;
-            font-size: 13px;
-            color: var(--text-tertiary);
-        }
-        
-        .status-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .status-item::before {
-            content: "●";
-            font-size: 8px;
-        }
-        
-        .status-item.success::before {
-            color: var(--success);
-        }
-        
-        /* 分析结果面板 */
-        .analysis-panel {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 400px;
-            background-color: var(--card-bg);
-            border-top: 1px solid var(--border);
-            box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1);
-            display: none;
-            flex-direction: column;
-            z-index: 999;
-        }
-        
-        .analysis-panel.active {
-            display: flex;
-        }
-        
-        .analysis-header {
-            padding: 16px 24px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #fafafa;
-        }
-        
-        .analysis-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-        
-        .analysis-close {
-            cursor: pointer;
-            padding: 8px;
-            border-radius: var(--border-radius);
-            transition: var(--transition);
-            font-size: 20px;
-            color: var(--text-tertiary);
-        }
-        
-        .analysis-close:hover {
-            background-color: rgba(0, 0, 0, 0.05);
-            color: var(--text-primary);
-        }
-        
-        .analysis-content {
-            flex: 1;
-            padding: 24px;
-            overflow-y: auto;
-        }
-        
-        /* 按钮样式 */
+
         .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
+            padding: 8px 20px;
             border: 1px solid var(--border);
-            border-radius: var(--border-radius);
-            background-color: var(--card-bg);
-            color: var(--text-primary);
-            font-size: 14px;
+            border-radius: var(--radius);
+            background-color: white;
             cursor: pointer;
+            font-size: 14px;
             transition: var(--transition);
         }
-        
+
         .btn:hover {
             border-color: var(--primary);
             color: var(--primary);
         }
-        
+
         .btn-primary {
             background-color: var(--primary);
             border-color: var(--primary);
             color: white;
         }
-        
+
         .btn-primary:hover {
-            background-color: var(--primary-light);
-            border-color: var(--primary-light);
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+            color: white;
         }
-        
+
+        /* 状态栏 */
+        .status-bar {
+            height: 24px;
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+
+        .status-item {
+            margin-right: 24px;
+        }
+
+        .status-item:last-child {
+            margin-right: 0;
+            margin-left: auto;
+        }
+
+        /* 图表容器 */
+        .chart-container {
+            width: 100%;
+            height: 400px;
+            margin-top: 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background-color: white;
+        }
+
+        /* 变量列表 */
+        .variable-list {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background-color: white;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .variable-list-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-light);
+            font-size: 13px;
+            transition: var(--transition);
+        }
+
+        .variable-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .variable-list-item:hover {
+            background-color: var(--bg-tertiary);
+        }
+
+        .variable-list-item.selected {
+            background-color: rgba(24, 144, 255, 0.1);
+            color: var(--primary);
+        }
+
+        /* 复选框组 */
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
         /* 消息提示 */
-        .message {
-            padding: 12px 16px;
-            border-radius: var(--border-radius);
-            margin-bottom: 16px;
-            font-size: 14px;
+        .message-container {
+            position: fixed;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 30000;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
-        
+
+        .message {
+            padding: 10px 20px;
+            border-radius: var(--radius);
+            font-size: 14px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: slideIn 0.3s ease;
+        }
+
         .message.success {
             background-color: #f6ffed;
             border: 1px solid #b7eb8f;
-            color: var(--success);
+            color: #52c41a;
         }
-        
+
         .message.error {
             background-color: #fff1f0;
             border: 1px solid #ffccc7;
-            color: var(--error);
+            color: #ff4d4f;
         }
-        
+
+        .message.info {
+            background-color: #e6f7ff;
+            border: 1px solid #91d5ff;
+            color: #1890ff;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         /* 加载动画 */
         .loading {
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 120px;
-            gap: 12px;
+            padding: 40px;
         }
-        
+
         .loading-spinner {
-            width: 28px;
-            height: 28px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--primary);
+            width: 32px;
+            height: 32px;
+            border: 3px solid var(--border-light);
+            border-top-color: var(--primary);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
-        
+
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
-        
-        /* 结果表格 */
-        .result-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            font-size: 13px;
-        }
-        
-        .result-table th,
-        .result-table td {
-            padding: 10px 16px;
-            border: 1px solid var(--border);
-            text-align: left;
-        }
-        
-        .result-table th {
-            background-color: #fafafa;
-            font-weight: 600;
-        }
-        
-        .result-table td {
-            background-color: white;
-        }
-        
-        /* 工作区布局 */
-        .workspace-layout {
-            display: flex;
-            gap: 24px;
-            flex: 1;
-            overflow: hidden;
-        }
-        
-        .workspace-main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            overflow: hidden;
+
+        /* 响应式 */
+        @media (max-width: 1200px) {
+            .properties-panel {
+                width: 240px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- 顶部菜单栏 -->
+        <!-- 顶部菜单栏 - SPSS风格，所有功能集中在此 -->
         <div class="menu-bar">
-            <div class="menu-bar-left">
-                <div class="logo">AxaltyX</div>
-                <div class="menu-items">
-                    <div class="menu-item">
-                        <button>文件</button>
-                        <div class="submenu">
-                            <button class="submenu-item" onclick="newProject()">新建项目</button>
-                            <button class="submenu-item" onclick="openProject()">打开项目</button>
-                            <button class="submenu-item" onclick="saveProject()">保存项目</button>
-                            <div class="submenu-divider"></div>
-                            <button class="submenu-item" onclick="importData()">导入数据</button>
-                            <button class="submenu-item" onclick="exportData()">导出数据</button>
-                            <div class="submenu-divider"></div>
-                            <button class="submenu-item" onclick="exitApp()">退出</button>
+            <div class="menu-item" onmouseenter="showMenu(this)" onmouseleave="hideMenu(this)">
+                文件
+                <div class="submenu">
+                    <div class="submenu-item" onclick="newProject()">新建数据...</div>
+                    <div class="submenu-item" onclick="openProject()">打开...</div>
+                    <div class="submenu-item" onclick="saveProject()">保存</div>
+                    <div class="submenu-item" onclick="saveProjectAs()">另存为...</div>
+                    <div class="submenu-divider"></div>
+                    <div class="submenu-item" onclick="importData()">读取数据...</div>
+                    <div class="submenu-item" onclick="exportData()">另存为...</div>
+                    <div class="submenu-divider"></div>
+                    <div class="submenu-item" onclick="exitApp()">退出</div>
+                </div>
+            </div>
+            <div class="menu-item" onmouseenter="showMenu(this)" onmouseleave="hideMenu(this)">
+                编辑
+                <div class="submenu">
+                    <div class="submenu-item" onclick="undo()">撤销</div>
+                    <div class="submenu-item" onclick="redo()">重做</div>
+                    <div class="submenu-divider"></div>
+                    <div class="submenu-item" onclick="cutData()">剪切</div>
+                    <div class="submenu-item" onclick="copyData()">复制</div>
+                    <div class="submenu-item" onclick="pasteData()">粘贴</div>
+                    <div class="submenu-item" onclick="clearData()">清除</div>
+                    <div class="submenu-divider"></div>
+                    <div class="submenu-item" onclick="find()">查找</div>
+                    <div class="submenu-item" onclick="replace()">替换</div>
+                </div>
+            </div>
+            <div class="menu-item" onmouseenter="showMenu(this)" onmouseleave="hideMenu(this)">
+                视图
+                <div class="submenu">
+                    <div class="submenu-item" onclick="switchToDataView()">数据视图</div>
+                    <div class="submenu-item" onclick="switchToVariableView()">变量视图</div>
+                    <div class="submenu-divider"></div>
+                    <div class="submenu-item" onclick="showOutput()">输出</div>
+                    <div class="submenu-item" onclick="resetLayout()">重置布局</div>
+                </div>
+            </div>
+            <div class="menu-item" onmouseenter="showMenu(this)" onmouseleave="hideMenu(this)">
+                数据
+                <div class="submenu">
+                    <div class="submenu-item" onclick="defineVariables()">定义变量...</div>
+                    <div class="submenu-item" onclick="insertVariable()">插入变量</div>
+                    <div class="submenu-item" onclick="insertCase()">插入个案</div>
+                    <div class="submenu-divider"></div>
+                    <div class="submenu-item" onclick="computeVariable()">计算变量...</div>
+                    <div class="submenu-item" onclick="recodeIntoSame()">重新编码为相同变量...</div>
+                    <div class="submenu-item" onclick="recodeIntoDifferent()">重新编码为不同变量...</div>
+                    <div class="submenu-item" onclick="visualBinning()">可视离散化...</div>
+                    <div class="submenu-divider"></div>
+                    <div class="submenu-item" onclick="sortCases()">排序个案...</div>
+                    <div class="submenu-item" onclick="sortVariables()">排序变量...</div>
+                    <div class="submenu-item" onclick="transpose()">转置...</div>
+                    <div class="submenu-item" onclick="mergeFiles()">合并文件...</div>
+                    <div class="submenu-item" onclick="splitFile()">拆分文件...</div>
+                    <div class="submenu-item" onclick="selectCases()">选择个案...</div>
+                    <div class="submenu-item" onclick="weightCases()">加权个案...</div>
+                </div>
+            </div>
+            <div class="menu-item" onmouseenter="showMenu(this)" onmouseleave="hideMenu(this)">
+                转换
+                <div class="submenu">
+                    <div class="submenu-item" onclick="computeVariable()">计算变量...</div>
+                    <div class="submenu-item" onclick="countValues()">对个案内的值计数...</div>
+                    <div class="submenu-item" onclick="recodeIntoSame()">重新编码为相同变量...</div>
+                    <div class="submenu-item" onclick="recodeIntoDifferent()">重新编码为不同变量...</div>
+                    <div class="submenu-item" onclick="rankCases()">个案排秩...</div>
+                    <div class="submenu-item" onclick="dateTime()">日期和时间...</div>
+                    <div class="submenu-item" onclick="createTimeSeries()">创建时间序列...</div>
+                    <div class="submenu-item" onclick="replaceMissingValues()">替换缺失值...</div>
+                    <div class="submenu-item" onclick="randomNumberGenerators()">随机数字生成器...</div>
+                </div>
+            </div>
+            <div class="menu-item" onmouseenter="showMenu(this)" onmouseleave="hideMenu(this)">
+                分析
+                <div class="submenu">
+                    <div class="submenu-item submenu-has-sub">
+                        描述统计
+                        <div class="submenu" style="left: 100%; top: -4px;">
+                            <div class="submenu-item" onclick="showAnalysis('frequencies')">频率...</div>
+                            <div class="submenu-item" onclick="showAnalysis('descriptives')">描述...</div>
+                            <div class="submenu-item" onclick="showAnalysis('explore')">探索...</div>
+                            <div class="submenu-item" onclick="showAnalysis('crosstabs')">交叉表...</div>
                         </div>
                     </div>
-                    <div class="menu-item">
-                        <button>编辑</button>
-                        <div class="submenu">
-                            <button class="submenu-item" onclick="cutData()">剪切</button>
-                            <button class="submenu-item" onclick="copyData()">复制</button>
-                            <button class="submenu-item" onclick="pasteData()">粘贴</button>
-                            <div class="submenu-divider"></div>
-                            <button class="submenu-item" onclick="clearData()">清除数据</button>
+                    <div class="submenu-item submenu-has-sub">
+                        比较均值
+                        <div class="submenu" style="left: 100%; top: -4px;">
+                            <div class="submenu-item" onclick="showAnalysis('means')">均值...</div>
+                            <div class="submenu-item" onclick="showAnalysis('one_sample_t')">单样本T检验...</div>
+                            <div class="submenu-item" onclick="showAnalysis('independent_samples_t')">独立样本T检验...</div>
+                            <div class="submenu-item" onclick="showAnalysis('paired_samples_t')">配对样本T检验...</div>
+                            <div class="submenu-item" onclick="showAnalysis('one_way_anova')">单因素ANOVA...</div>
                         </div>
                     </div>
-                    <div class="menu-item">
-                        <button>视图</button>
-                        <div class="submenu">
-                            <button class="submenu-item" onclick="toggleProperties()">显示/隐藏属性面板</button>
-                            <button class="submenu-item" onclick="resetLayout()">重置布局</button>
+                    <div class="submenu-item submenu-has-sub">
+                        一般线性模型
+                        <div class="submenu" style="left: 100%; top: -4px;">
+                            <div class="submenu-item" onclick="showAnalysis('univariate')">单变量...</div>
+                            <div class="submenu-item" onclick="showAnalysis('multivariate')">多变量...</div>
+                            <div class="submenu-item" onclick="showAnalysis('repeated_measures')">重复度量...</div>
+                            <div class="submenu-item" onclick="showAnalysis('variance_components')">方差分量...</div>
                         </div>
                     </div>
-                    <div class="menu-item">
-                        <button>数据</button>
-                        <div class="submenu">
-                            <button class="submenu-item" onclick="defineVariables()">定义变量</button>
-                            <button class="submenu-item" onclick="transformData()">转换数据</button>
-                            <button class="submenu-item" onclick="cleanData()">数据清洗</button>
+                    <div class="submenu-item submenu-has-sub">
+                        相关
+                        <div class="submenu" style="left: 100%; top: -4px;">
+                            <div class="submenu-item" onclick="showAnalysis('bivariate')">双变量...</div>
+                            <div class="submenu-item" onclick="showAnalysis('partial')">偏相关...</div>
+                            <div class="submenu-item" onclick="showAnalysis('distance')">距离...</div>
                         </div>
                     </div>
-                    <div class="menu-item">
-                        <button>分析</button>
-                        <div class="submenu">
-                            <button class="submenu-item" onclick="showAnalysis('descriptive')">描述性统计</button>
-                            <button class="submenu-item" onclick="showAnalysis('frequency')">频数分析</button>
-                            <button class="submenu-item" onclick="showAnalysis('compare_means')">比较均值</button>
-                            <button class="submenu-item" onclick="showAnalysis('correlate')">相关分析</button>
-                            <button class="submenu-item" onclick="showAnalysis('regression')">回归分析</button>
-                            <button class="submenu-item" onclick="showAnalysis('anova')">方差分析</button>
-                            <button class="submenu-item" onclick="showAnalysis('nonparametric')">非参数检验</button>
-                            <button class="submenu-item" onclick="showAnalysis('survival')">生存分析</button>
-                            <button class="submenu-item" onclick="showAnalysis('time_series')">时间序列分析</button>
-                            <button class="submenu-item" onclick="showAnalysis('machine_learning')">机器学习</button>
+                    <div class="submenu-item submenu-has-sub">
+                        回归
+                        <div class="submenu" style="left: 100%; top: -4px;">
+                            <div class="submenu-item" onclick="showAnalysis('linear_regression')">线性...</div>
+                            <div class="submenu-item" onclick="showAnalysis('logistic_regression')">二元Logistic...</div>
+                            <div class="submenu-item" onclick="showAnalysis('ordinal_regression')">有序...</div>
+                            <div class="submenu-item" onclick="showAnalysis('multinomial_logistic')">多项Logistic...</div>
+                            <div class="submenu-item" onclick="showAnalysis('curve_estimation')">曲线估算...</div>
                         </div>
                     </div>
-                    <div class="menu-item">
-                        <button>绘图</button>
-                        <div class="submenu">
-                            <button class="submenu-item" onclick="showAnalysis('charts')">基础图表</button>
-                            <button class="submenu-item" onclick="showAnalysis('interactive')">交互式可视化</button>
+                    <div class="submenu-divider"></div>
+                    <div class="submenu-item submenu-has-sub">
+                        降维
+                        <div class="submenu" style="left: 100%; top: -4px;">
+                            <div class="submenu-item" onclick="showAnalysis('factor')">因子分析...</div>
+                            <div class="submenu-item" onclick="showAnalysis('pca')">主成分分析...</div>
                         </div>
                     </div>
-                    <div class="menu-item">
-                        <button>工具</button>
-                        <div class="submenu">
-                            <button class="submenu-item" onclick="showAnalysis('data_prep')">数据准备</button>
-                            <button class="submenu-item" onclick="showAnalysis('reports')">报告生成</button>
-                            <div class="submenu-divider"></div>
-                            <button class="submenu-item" onclick="showSettings()">设置</button>
+                    <div class="submenu-item submenu-has-sub">
+                        分类
+                        <div class="submenu" style="left: 100%; top: -4px;">
+                            <div class="submenu-item" onclick="showAnalysis('kmeans')">K-均值聚类...</div>
+                            <div class="submenu-item" onclick="showAnalysis('hierarchical')">系统聚类...</div>
+                            <div class="submenu-item" onclick="showAnalysis('discriminant')">判别...</div>
                         </div>
                     </div>
-                    <div class="menu-item">
-                        <button>帮助</button>
-                        <div class="submenu">
-                            <button class="submenu-item" onclick="showHelp()">帮助文档</button>
-                            <button class="submenu-item" onclick="showTutorial()">教程</button>
-                            <div class="submenu-divider"></div>
-                            <button class="submenu-item" onclick="showAbout()">关于</button>
+                    <div class="submenu-divider"></div>
+                    <div class="submenu-item submenu-has-sub">
+                        非参数检验
+                        <div class="submenu" style="left: 100%; top: -4px;">
+                            <div class="submenu-item" onclick="showAnalysis('chi_square')">卡方检验...</div>
+                            <div class="submenu-item" onclick="showAnalysis('binomial')">二项式...</div>
+                            <div class="submenu-item" onclick="showAnalysis('runs')">游程...</div>
+                            <div class="submenu-item" onclick="showAnalysis('mann_whitney')">Mann-Whitney U...</div>
+                            <div class="submenu-item" onclick="showAnalysis('kruskal_wallis')">Kruskal-Wallis H...</div>
+                        </div>
+                    </div>
+                    <div class="submenu-item submenu-has-sub">
+                        时间序列
+                        <div class="submenu" style="left: 100%; top: -4px;">
+                            <div class="submenu-item" onclick="showAnalysis('arima')">ARIMA模型...</div>
+                            <div class="submenu-item" onclick="showAnalysis('exponential_smoothing')">指数平滑...</div>
+                            <div class="submenu-item" onclick="showAnalysis('seasonal_decomposition')">季节性分解...</div>
+                        </div>
+                    </div>
+                    <div class="submenu-item submenu-has-sub">
+                        生存分析
+                        <div class="submenu" style="left: 100%; top: -4px;">
+                            <div class="submenu-item" onclick="showAnalysis('kaplan_meier')">Kaplan-Meier...</div>
+                            <div class="submenu-item" onclick="showAnalysis('cox_regression')">Cox回归...</div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="menu-item" onmouseenter="showMenu(this)" onmouseleave="hideMenu(this)">
+                图形
+                <div class="submenu">
+                    <div class="submenu-item" onclick="showAnalysis('chart_builder')">图表构建器...</div>
+                    <div class="submenu-item" onclick="showAnalysis('legacy_dialogs')">旧对话框...</div>
+                    <div class="submenu-divider"></div>
+                    <div class="submenu-item" onclick="showChart('bar')">条形图...</div>
+                    <div class="submenu-item" onclick="showChart('line')">折线图...</div>
+                    <div class="submenu-item" onclick="showChart('area')">面积图...</div>
+                    <div class="submenu-item" onclick="showChart('pie')">饼图...</div>
+                    <div class="submenu-item" onclick="showChart('histogram')">直方图...</div>
+                    <div class="submenu-item" onclick="showChart('scatter')">散点/点图...</div>
+                    <div class="submenu-item" onclick="showChart('boxplot')">箱线图...</div>
+                    <div class="submenu-item" onclick="showChart('heatmap')">热图...</div>
+                    <div class="submenu-item" onclick="showChart('matrix')">矩阵图...</div>
+                    <div class="submenu-divider"></div>
+                    <div class="submenu-item" onclick="showChart('roc')">ROC曲线图...</div>
+                    <div class="submenu-item" onclick="showChart('pp')">P-P图...</div>
+                    <div class="submenu-item" onclick="showChart('qq')">Q-Q图...</div>
+                </div>
+            </div>
+            <div class="menu-item" onmouseenter="showMenu(this)" onmouseleave="hideMenu(this)">
+                实用程序
+                <div class="submenu">
+                    <div class="submenu-item" onclick="showAnalysis('missing_values')">缺失值分析...</div>
+                    <div class="submenu-item" onclick="showAnalysis('multiple_response')">多重响应...</div>
+                    <div class="submenu-divider"></div>
+                    <div class="submenu-item" onclick="showAnalysis('reports')">报告...</div>
+                    <div class="submenu-item" onclick="showSettings()">选项...</div>
+                </div>
+            </div>
+            <div class="menu-item" onmouseenter="showMenu(this)" onmouseleave="hideMenu(this)">
+                窗口
+                <div class="submenu">
+                    <div class="submenu-item" onclick="minimizeAll()">最小化全部</div>
+                    <div class="submenu-item" onclick="restoreAll()">还原全部</div>
+                </div>
+            </div>
+            <div class="menu-item" onmouseenter="showMenu(this)" onmouseleave="hideMenu(this)">
+                帮助
+                <div class="submenu">
+                    <div class="submenu-item" onclick="showHelp()">帮助主题</div>
+                    <div class="submenu-item" onclick="showTutorial()">教程</div>
+                    <div class="submenu-divider"></div>
+                    <div class="submenu-item" onclick="showAbout()">关于 AxaltyX</div>
+                </div>
+            </div>
         </div>
-        
+
         <!-- 工具栏 -->
         <div class="toolbar">
             <div class="tool-group">
-                <button class="tool-btn" onclick="newProject()">📄 新建</button>
-                <button class="tool-btn" onclick="openProject()">📂 打开</button>
-                <button class="tool-btn primary" onclick="saveProject()">💾 保存</button>
+                <button class="tool-btn" title="新建数据" onclick="newProject()">📄 新建</button>
+                <button class="tool-btn" title="打开数据" onclick="openProject()">📂 打开</button>
+                <button class="tool-btn" title="保存数据" onclick="saveProject()">💾 保存</button>
             </div>
             <div class="tool-group">
-                <button class="tool-btn" onclick="cutData()">✂️ 剪切</button>
-                <button class="tool-btn" onclick="copyData()">📋 复制</button>
-                <button class="tool-btn" onclick="pasteData()">📌 粘贴</button>
+                <button class="tool-btn" title="撤销" onclick="undo()">↶ 撤销</button>
+                <button class="tool-btn" title="重做" onclick="redo()">↷ 重做</button>
             </div>
             <div class="tool-group">
-                <button class="tool-btn" onclick="importData()">📥 导入</button>
-                <button class="tool-btn" onclick="exportData()">📤 导出</button>
+                <button class="tool-btn" title="查找" onclick="find()">🔍 查找</button>
             </div>
             <div class="tool-group">
-                <button class="tool-btn" onclick="switchToVariableView()">📊 变量视图</button>
-                <button class="tool-btn" onclick="switchToDataView()">📈 数据视图</button>
-            </div>
-            <div class="tool-group">
-                <button class="tool-btn primary" onclick="showAnalysis('descriptive')">🔍 快速分析</button>
+                <button class="tool-btn" title="数据视图" onclick="switchToDataView()">📊 数据视图</button>
+                <button class="tool-btn" title="变量视图" onclick="switchToVariableView()">📋 变量视图</button>
             </div>
         </div>
-        
+
         <!-- 主工作区 -->
         <div class="main-workspace">
             <!-- 标签页 -->
             <div class="tabs">
-                <button class="tab active" data-tab="data_view" onclick="switchTab('data_view')">数据视图</button>
-                <button class="tab" data-tab="variable_view" onclick="switchTab('variable_view')">变量视图</button>
-                <button class="tab" data-tab="output" onclick="switchTab('output')">输出</button>
+                <div class="tab active" data-tab="data_view" onclick="switchTab('data_view')">数据视图</div>
+                <div class="tab" data-tab="variable_view" onclick="switchTab('variable_view')">变量视图</div>
+                <div class="tab" data-tab="output" onclick="switchTab('output')">输出</div>
             </div>
-            
-            <div class="workspace-layout">
-                <!-- 中央工作区 -->
-                <div class="workspace-main">
-                    <!-- 数据表格区域 -->
-                    <div class="data-area">
-                        <!-- 数据视图 -->
-                        <div id="data_view" class="tab-content active">
-                            <div class="data-table-container">
-                                <table class="data-table" id="data_table">
-                                    <thead id="table_header">
-                                    </thead>
-                                    <tbody id="table_body">
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        
-                        <!-- 变量视图 -->
-                        <div id="variable_view" class="tab-content" style="display: none;">
-                            <div class="data-table-container">
-                                <table class="data-table" id="variable_table">
-                                    <thead>
-                                        <tr>
-                                            <th>变量名</th>
-                                            <th>类型</th>
-                                            <th>宽度</th>
-                                            <th>小数</th>
-                                            <th>标签</th>
-                                            <th>值</th>
-                                            <th>缺失</th>
-                                            <th>列</th>
-                                            <th>对齐</th>
-                                            <th>测量</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="variable_table_body">
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        
-                        <!-- 输出视图 -->
-                        <div id="output" class="tab-content" style="display: none;">
-                            <div class="data-table-container">
-                                <div id="output_content">
-                                    <p style="text-align: center; color: var(--text-tertiary); margin-top: 60px; font-size: 14px;">输出将显示在这里</p>
-                                </div>
-                            </div>
-                        </div>
+
+            <!-- 数据区域 -->
+            <div class="data-area">
+                <!-- 数据视图 -->
+                <div id="data_view" class="tab-content active">
+                    <div class="data-table-container">
+                        <table class="data-table" id="data_table">
+                            <thead id="table_header">
+                                <!-- 列标题将通过JavaScript生成 -->
+                            </thead>
+                            <tbody id="table_body">
+                                <!-- 表格数据将通过JavaScript生成 -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                
-                <!-- 右侧属性面板 -->
-                <div class="properties-panel" id="properties_panel">
-                    <div class="properties-header">属性</div>
-                    <div class="properties-content">
-                        <div class="property-group">
-                            <div class="property-group-title">数据集</div>
-                            <div class="property-item">
-                                <label class="property-label">名称</label>
-                                <input type="text" class="property-input" id="dataset_name" value="未命名数据集">
-                            </div>
-                            <div class="property-item">
-                                <label class="property-label">变量数</label>
-                                <input type="text" class="property-input" id="variable_count" value="10" disabled>
-                            </div>
-                            <div class="property-item">
-                                <label class="property-label">案例数</label>
-                                <input type="text" class="property-input" id="case_count" value="100" disabled>
-                            </div>
-                        </div>
-                        
-                        <div class="property-group">
-                            <div class="property-group-title">变量</div>
-                            <div class="property-item">
-                                <label class="property-label">当前变量</label>
-                                <input type="text" class="property-input" id="current_variable" value="var1" disabled>
-                            </div>
-                            <div class="property-item">
-                                <label class="property-label">变量标签</label>
-                                <input type="text" class="property-input" id="variable_label" value="变量 1">
-                            </div>
-                            <div class="property-item">
-                                <label class="property-label">变量类型</label>
-                                <select class="property-input" id="variable_type">
-                                    <option value="numeric">数值</option>
-                                    <option value="string">字符串</option>
-                                    <option value="date">日期</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <div class="property-group">
-                            <div class="property-group-title">分析</div>
-                            <button class="btn btn-primary" style="width: 100%; margin-bottom: 12px;" onclick="runAnalysis()">▶️ 运行分析</button>
-                            <button class="btn" style="width: 100%;" onclick="clearOutput()">🗑️ 清除输出</button>
+
+                <!-- 变量视图 -->
+                <div id="variable_view" class="tab-content">
+                    <div class="data-table-container">
+                        <table class="variable-table" id="variable_table">
+                            <thead>
+                                <tr>
+                                    <th>名称</th>
+                                    <th>类型</th>
+                                    <th>宽度</th>
+                                    <th>小数</th>
+                                    <th>标签</th>
+                                    <th>值</th>
+                                    <th>缺失</th>
+                                    <th>列</th>
+                                    <th>对齐</th>
+                                    <th>度量标准</th>
+                                </tr>
+                            </thead>
+                            <tbody id="variable_table_body">
+                                <!-- 变量数据将通过JavaScript生成 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- 输出视图 -->
+                <div id="output" class="tab-content">
+                    <div class="output-container" id="output_content">
+                        <div style="text-align: center; color: var(--text-tertiary); margin-top: 60px; font-size: 14px;">
+                            输出将显示在这里
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <!-- 状态栏 -->
         <div class="status-bar">
-            <div class="status-item success">就绪</div>
-            <div class="status-item">变量: <span id="status_variables">10</span></div>
-            <div class="status-item">案例: <span id="status_cases">100</span></div>
-            <div class="status-item success">Python服务器: 运行中</div>
+            <div class="status-item">就绪</div>
+            <div class="status-item">变量: <span id="var_count">10</span></div>
+            <div class="status-item">个案: <span id="case_count">100</span></div>
+            <div class="status-item">Python: <span id="python_status">已连接</span></div>
         </div>
-        
-        <!-- 分析结果面板 -->
-        <div class="analysis-panel" id="analysis_panel">
-            <div class="analysis-header">
-                <div class="analysis-title">分析结果</div>
-                <div class="analysis-close" onclick="closeAnalysisPanel()">×</div>
+    </div>
+
+    <!-- 分析对话框 -->
+    <div class="analysis-dialog-overlay" id="analysis_dialog">
+        <div class="analysis-dialog">
+            <div class="dialog-header">
+                <div class="dialog-title" id="dialog_title">分析</div>
+                <button class="dialog-close" onclick="closeDialog()">×</button>
             </div>
-            <div class="analysis-content" id="analysis_content">
+            <div class="dialog-content" id="dialog_content">
+                <!-- 对话框内容 -->
+            </div>
+            <div class="dialog-footer">
+                <button class="btn" onclick="closeDialog()">取消</button>
+                <button class="btn btn-primary" onclick="runCurrentAnalysis()">确定</button>
             </div>
         </div>
     </div>
-    
+
+    <!-- 消息容器 -->
+    <div class="message-container" id="message_container"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
     <script src="js/dataManager.js"></script>
     <script src="js/statsAnalyzer.js"></script>
     <script src="js/chartManager.js"></script>
     <script src="js/projectManager.js"></script>
     <script>
-        console.log('Script started');
+        console.log('AxaltyX 统计软件启动');
+
         // 全局变量
         let dataManager = new DataManager();
         let statsAnalyzer = new StatsAnalyzer();
@@ -837,65 +1045,67 @@
         let projectManager = new ProjectManager();
         let currentData = null;
         let currentTab = 'data_view';
-        console.log('Global variables initialized');
-        
+        let currentAnalysis = null;
+
+        console.log('全局变量初始化完成');
+
         // 初始化应用
         function initApp() {
-            console.log('Initializing app...');
+            console.log('初始化应用...');
             createEmptyTable(100, 10);
             initVariableView();
             loadSampleData();
-            console.log('App initialized');
+            console.log('应用初始化完成');
         }
-        
-        // 创建空表格
+
+        // 创建空表格 (100行 x 10列)
         function createEmptyTable(rows, cols) {
             const tableHeader = document.getElementById('table_header');
             const tableBody = document.getElementById('table_body');
-            
+
             tableHeader.innerHTML = '';
             tableBody.innerHTML = '';
-            
+
             const headerRow = document.createElement('tr');
-            const rowHeaderTh = document.createElement('th');
-            rowHeaderTh.textContent = '';
-            rowHeaderTh.className = 'row-header';
-            headerRow.appendChild(rowHeaderTh);
-            
+            const cornerTh = document.createElement('th');
+            cornerTh.className = 'row-header';
+            cornerTh.textContent = '';
+            headerRow.appendChild(cornerTh);
+
             for (let i = 1; i <= cols; i++) {
                 const th = document.createElement('th');
                 const input = document.createElement('input');
                 input.type = 'text';
                 input.value = `var${i}`;
                 input.onchange = function() {
-                    updateVariableName(i-1, this.value);
+                    updateVariableName(i - 1, this.value);
                 };
                 th.appendChild(input);
                 headerRow.appendChild(th);
             }
             tableHeader.appendChild(headerRow);
-            
+
             for (let i = 1; i <= rows; i++) {
                 const row = document.createElement('tr');
-                
+
                 const rowHeaderTd = document.createElement('td');
                 rowHeaderTd.className = 'row-header';
-                const rowInput = document.createElement('input');
-                rowInput.type = 'text';
-                rowInput.value = i;
-                rowInput.onchange = function() {
-                    updateRowName(i-1, this.value);
-                };
-                rowHeaderTd.appendChild(rowInput);
+                rowHeaderTd.textContent = i;
                 row.appendChild(rowHeaderTd);
-                
+
                 for (let j = 1; j <= cols; j++) {
                     const td = document.createElement('td');
                     const input = document.createElement('input');
                     input.type = 'text';
                     input.value = '';
                     input.onchange = function() {
-                        updateCellValue(i-1, j-1, this.value);
+                        updateCellValue(i - 1, j - 1, this.value);
+                    };
+                    input.onfocus = function() {
+                        this.parentElement.classList.add('selected');
+                    };
+                    input.onblur = function() {
+                        this.parentElement.classList.remove('selected');
                     };
                     td.appendChild(input);
                     row.appendChild(td);
@@ -903,37 +1113,37 @@
                 tableBody.appendChild(row);
             }
         }
-        
+
         // 初始化变量视图
         function initVariableView() {
             const variableTableBody = document.getElementById('variable_table_body');
             variableTableBody.innerHTML = '';
-            
+
             for (let i = 1; i <= 10; i++) {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td><input type="text" value="var${i}" onchange="updateVariableNameInView(${i-1}, this.value)"></td>
+                    <td><input type="text" value="var${i}" onchange="updateVariableNameInView(${i - 1}, this.value)"></td>
                     <td><select><option value="numeric">数值</option><option value="string">字符串</option><option value="date">日期</option></select></td>
-                    <td><input type="number" value="8" min="1"></td>
-                    <td><input type="number" value="2" min="0"></td>
+                    <td><input type="number" value="8" min="1" style="width: 60px;"></td>
+                    <td><input type="number" value="2" min="0" style="width: 60px;"></td>
                     <td><input type="text" value="变量 ${i}"></td>
                     <td><input type="text" value=""></td>
                     <td><input type="text" value=""></td>
-                    <td><input type="number" value="${i}" min="1"></td>
-                    <td><select><option value="right">右</option><option value="left">左</option><option value="center">中</option></select></td>
+                    <td><input type="number" value="8" min="1" style="width: 60px;"></td>
+                    <td><select><option value="right">右</option><option value="left">左</option><option value="center">居中</option></select></td>
                     <td><select><option value="scale">度量</option><option value="ordinal">有序</option><option value="nominal">名义</option></select></td>
                 `;
                 variableTableBody.appendChild(row);
             }
         }
-        
+
         // 更新变量名
         function updateVariableName(index, name) {
             const headers = document.querySelectorAll('#table_header th input');
-            if (headers[index+1]) {
-                headers[index+1].value = name;
+            if (headers[index]) {
+                headers[index].value = name;
             }
-            
+
             const variableRows = document.querySelectorAll('#variable_table_body tr');
             if (variableRows[index]) {
                 const input = variableRows[index].querySelector('td:first-child input');
@@ -942,36 +1152,32 @@
                 }
             }
         }
-        
-        // 更新变量视图中的变量名
+
         function updateVariableNameInView(index, name) {
             const headers = document.querySelectorAll('#table_header th input');
-            if (headers[index+1]) {
-                headers[index+1].value = name;
+            if (headers[index]) {
+                headers[index].value = name;
             }
         }
-        
-        // 更新行名
-        function updateRowName(index, name) {
-        }
-        
+
         // 更新单元格值
         function updateCellValue(row, col, value) {
             if (!currentData) {
                 currentData = {};
             }
-            
-            const variableName = document.querySelectorAll('#table_header th input')[col+1].value;
+
+            const headers = document.querySelectorAll('#table_header th input');
+            const variableName = headers[col].value;
             if (!currentData[variableName]) {
                 currentData[variableName] = Array(100).fill('');
             }
             currentData[variableName][row] = value;
         }
-        
+
         // 加载示例数据
         function loadSampleData() {
             const sampleData = {
-                'ID': Array.from({length: 100}, (_, i) => i+1),
+                'ID': Array.from({length: 100}, (_, i) => i + 1),
                 '年龄': Array.from({length: 100}, () => Math.floor(Math.random() * 30) + 20),
                 '性别': Array.from({length: 100}, () => Math.random() > 0.5 ? '男' : '女'),
                 '得分': Array.from({length: 100}, () => Math.floor(Math.random() * 30) + 70),
@@ -980,28 +1186,34 @@
                 '体重': Array.from({length: 100}, () => (Math.random() * 30 + 50).toFixed(1)),
                 'BMI': Array.from({length: 100}, () => (Math.random() * 10 + 18).toFixed(2)),
                 '成绩': Array.from({length: 100}, () => Math.floor(Math.random() * 40) + 60),
-                '排名': Array.from({length: 100}, (_, i) => i+1)
+                '收入': Array.from({length: 100}, () => Math.floor(Math.random() * 50000) + 30000)
             };
-            
+
             currentData = sampleData;
             updateTableFromData(sampleData);
             updateVariableViewFromData(sampleData);
+
+            statsAnalyzer.loadData(sampleData).then(() => {
+                console.log('数据已加载到统计引擎');
+            }).catch(error => {
+                console.error('加载数据到统计引擎时出错:', error);
+            });
         }
-        
+
         // 从数据更新表格
         function updateTableFromData(data) {
             const variables = Object.keys(data);
             const rowCount = data[variables[0]].length;
-            
+
             const tableHeader = document.getElementById('table_header');
             tableHeader.innerHTML = '';
-            
+
             const headerRow = document.createElement('tr');
-            const rowHeaderTh = document.createElement('th');
-            rowHeaderTh.textContent = '';
-            rowHeaderTh.className = 'row-header';
-            headerRow.appendChild(rowHeaderTh);
-            
+            const cornerTh = document.createElement('th');
+            cornerTh.className = 'row-header';
+            cornerTh.textContent = '';
+            headerRow.appendChild(cornerTh);
+
             variables.forEach((variable, index) => {
                 const th = document.createElement('th');
                 const input = document.createElement('input');
@@ -1014,24 +1226,18 @@
                 headerRow.appendChild(th);
             });
             tableHeader.appendChild(headerRow);
-            
+
             const tableBody = document.getElementById('table_body');
             tableBody.innerHTML = '';
-            
+
             for (let i = 0; i < rowCount; i++) {
                 const row = document.createElement('tr');
-                
+
                 const rowHeaderTd = document.createElement('td');
                 rowHeaderTd.className = 'row-header';
-                const rowInput = document.createElement('input');
-                rowInput.type = 'text';
-                rowInput.value = i+1;
-                rowInput.onchange = function() {
-                    updateRowName(i, this.value);
-                };
-                rowHeaderTd.appendChild(rowInput);
+                rowHeaderTd.textContent = i + 1;
                 row.appendChild(rowHeaderTd);
-                
+
                 variables.forEach(variable => {
                     const td = document.createElement('td');
                     const input = document.createElement('input');
@@ -1040,276 +1246,911 @@
                     input.onchange = function() {
                         updateCellValue(i, variables.indexOf(variable), this.value);
                     };
+                    input.onfocus = function() {
+                        this.parentElement.classList.add('selected');
+                    };
+                    input.onblur = function() {
+                        this.parentElement.classList.remove('selected');
+                    };
                     td.appendChild(input);
                     row.appendChild(td);
                 });
                 tableBody.appendChild(row);
             }
-            
-            document.getElementById('status_variables').textContent = variables.length;
-            document.getElementById('status_cases').textContent = rowCount;
-            document.getElementById('variable_count').value = variables.length;
-            document.getElementById('case_count').value = rowCount;
+
+            document.getElementById('var_count').textContent = variables.length;
+            document.getElementById('case_count').textContent = rowCount;
         }
-        
+
         // 从数据更新变量视图
         function updateVariableViewFromData(data) {
             const variables = Object.keys(data);
             const variableTableBody = document.getElementById('variable_table_body');
             variableTableBody.innerHTML = '';
-            
+
             variables.forEach((variable, index) => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td><input type="text" value="${variable}" onchange="updateVariableNameInView(${index}, this.value)"></td>
                     <td><select><option value="numeric">数值</option><option value="string">字符串</option><option value="date">日期</option></select></td>
-                    <td><input type="number" value="8" min="1"></td>
-                    <td><input type="number" value="2" min="0"></td>
+                    <td><input type="number" value="8" min="1" style="width: 60px;"></td>
+                    <td><input type="number" value="2" min="0" style="width: 60px;"></td>
                     <td><input type="text" value="${variable}"></td>
                     <td><input type="text" value=""></td>
                     <td><input type="text" value=""></td>
-                    <td><input type="number" value="${index+1}" min="1"></td>
-                    <td><select><option value="right">右</option><option value="left">左</option><option value="center">中</option></select></td>
+                    <td><input type="number" value="8" min="1" style="width: 60px;"></td>
+                    <td><select><option value="right">右</option><option value="left">左</option><option value="center">居中</option></select></td>
                     <td><select><option value="scale">度量</option><option value="ordinal">有序</option><option value="nominal">名义</option></select></td>
                 `;
                 variableTableBody.appendChild(row);
             });
         }
-        
+
         // 切换标签页
         function switchTab(tabId) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
-            
+
             document.querySelector(`.tab[data-tab="${tabId}"]`).classList.add('active');
             document.getElementById(tabId).style.display = 'block';
             currentTab = tabId;
         }
-        
-        // 切换到变量视图
-        function switchToVariableView() {
-            switchTab('variable_view');
-        }
-        
-        // 切换到数据视图
+
         function switchToDataView() {
             switchTab('data_view');
         }
-        
+
+        function switchToVariableView() {
+            switchTab('variable_view');
+        }
+
+        function showOutput() {
+            switchTab('output');
+        }
+
+        // 菜单显示/隐藏
+        function showMenu(element) {
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function hideMenu(element) {
+            element.classList.remove('active');
+        }
+
         // 生成变量选项
         function generateVariableOptions() {
             if (!currentData) {
-                return '';
+                return '<option value="">请先加载数据</option>';
             }
-            return Object.keys(currentData).map(varName => `<option value="${varName}">${varName}</option>`).join('');
+            return Object.keys(currentData).map(varName => 
+                `<option value="${varName}">${varName}</option>`
+            ).join('');
         }
-        
-        // 显示分析面板
-        function showAnalysis(section) {
-            const analysisPanel = document.getElementById('analysis_panel');
-            const analysisContent = document.getElementById('analysis_content');
-            
-            analysisPanel.classList.add('active');
-            
-            let content = '';
-            switch (section) {
-                case 'descriptive':
-                    content = `
-                        <h3 style="margin-bottom: 20px; color: var(--text-primary);">描述性统计</h3>
-                        <div style="margin-bottom: 20px;">
-                            <label style="display: block; margin-bottom: 8px; color: var(--text-secondary);">选择变量:</label>
-                            <select multiple style="width: 100%; height: 120px; padding: 8px; border: 1px solid var(--border); border-radius: var(--border-radius);">
-                                ${generateVariableOptions()}
-                            </select>
-                        </div>
-                        <div style="margin-bottom: 20px;">
-                            <label style="display: block; margin-bottom: 8px; color: var(--text-secondary);">统计量:</label>
-                            <div style="display: flex; flex-wrap: wrap; gap: 16px;">
-                                <label style="display: flex; align-items: center; gap: 6px;"><input type="checkbox" checked> 均值</label>
-                                <label style="display: flex; align-items: center; gap: 6px;"><input type="checkbox" checked> 标准差</label>
-                                <label style="display: flex; align-items: center; gap: 6px;"><input type="checkbox" checked> 最小值</label>
-                                <label style="display: flex; align-items: center; gap: 6px;"><input type="checkbox" checked> 最大值</label>
-                                <label style="display: flex; align-items: center; gap: 6px;"><input type="checkbox"> 偏度</label>
-                                <label style="display: flex; align-items: center; gap: 6px;"><input type="checkbox"> 峰度</label>
+
+        // 显示分析对话框
+        function showAnalysis(analysisType) {
+            currentAnalysis = analysisType;
+            const dialogOverlay = document.getElementById('analysis_dialog');
+            const dialogTitle = document.getElementById('dialog_title');
+            const dialogContent = document.getElementById('dialog_content');
+
+            const analysisTitles = {
+                'frequencies': '频率分析',
+                'descriptives': '描述统计',
+                'explore': '探索分析',
+                'crosstabs': '交叉表',
+                'means': '均值',
+                'one_sample_t': '单样本T检验',
+                'independent_samples_t': '独立样本T检验',
+                'paired_samples_t': '配对样本T检验',
+                'one_way_anova': '单因素ANOVA',
+                'bivariate': '双变量相关',
+                'linear_regression': '线性回归',
+                'logistic_regression': '二元Logistic回归',
+                'factor': '因子分析',
+                'pca': '主成分分析',
+                'kmeans': 'K-均值聚类',
+                'hierarchical': '系统聚类',
+                'bar': '条形图',
+                'line': '折线图',
+                'scatter': '散点图',
+                'histogram': '直方图',
+                'boxplot': '箱线图',
+                'heatmap': '热图',
+                'matrix': '矩阵图'
+            };
+
+            dialogTitle.textContent = analysisTitles[analysisType] || '分析';
+            dialogContent.innerHTML = generateDialogContent(analysisType);
+            dialogOverlay.classList.add('active');
+        }
+
+        // 生成对话框内容
+        function generateDialogContent(type) {
+            const variableOptions = generateVariableOptions();
+
+            switch(type) {
+                case 'frequencies':
+                    return `
+                        <div class="form-group">
+                            <label class="form-label">变量:</label>
+                            <div class="variable-list" id="var_list_frequencies">
+                                ${Object.keys(currentData || {}).map(varName => 
+                                    `<div class="variable-list-item" onclick="toggleVariable(this, 'frequencies')">${varName}</div>`
+                                ).join('')}
                             </div>
                         </div>
-                        <button class="btn btn-primary" onclick="runDescriptiveAnalysis()">运行分析</button>
+                        <div class="form-group">
+                            <label class="form-label">统计量:</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item"><input type="checkbox" checked> 均值</label>
+                                <label class="checkbox-item"><input type="checkbox" checked> 中位数</label>
+                                <label class="checkbox-item"><input type="checkbox" checked> 众数</label>
+                                <label class="checkbox-item"><input type="checkbox"> 标准差</label>
+                                <label class="checkbox-item"><input type="checkbox"> 方差</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">图表:</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item"><input type="checkbox" checked> 条形图</label>
+                                <label class="checkbox-item"><input type="checkbox"> 饼图</label>
+                                <label class="checkbox-item"><input type="checkbox"> 直方图</label>
+                            </div>
+                        </div>
                     `;
-                    break;
+
+                case 'descriptives':
+                    return `
+                        <div class="form-group">
+                            <label class="form-label">变量:</label>
+                            <div class="variable-list" id="var_list_descriptives">
+                                ${Object.keys(currentData || {}).map(varName => 
+                                    `<div class="variable-list-item" onclick="toggleVariable(this, 'descriptives')">${varName}</div>`
+                                ).join('')}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">选项:</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-item"><input type="checkbox" checked> 均值</label>
+                                <label class="checkbox-item"><input type="checkbox" checked> 总和</label>
+                                <label class="checkbox-item"><input type="checkbox" checked> 标准差</label>
+                                <label class="checkbox-item"><input type="checkbox" checked> 最小值</label>
+                                <label class="checkbox-item"><input type="checkbox" checked> 最大值</label>
+                                <label class="checkbox-item"><input type="checkbox"> 范围</label>
+                                <label class="checkbox-item"><input type="checkbox"> 偏度</label>
+                                <label class="checkbox-item"><input type="checkbox"> 峰度</label>
+                            </div>
+                        </div>
+                    `;
+
+                case 'one_sample_t':
+                    return `
+                        <div class="form-group">
+                            <label class="form-label">检验变量:</label>
+                            <select class="form-control" id="test_var">
+                                ${variableOptions}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">检验值:</label>
+                            <input type="number" class="form-control" id="test_value" value="0">
+                        </div>
+                    `;
+
+                case 'independent_samples_t':
+                    return `
+                        <div class="form-group">
+                            <label class="form-label">检验变量:</label>
+                            <select class="form-control" id="test_var">
+                                ${variableOptions}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">分组变量:</label>
+                            <select class="form-control" id="group_var">
+                                ${variableOptions}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">定义组:</label>
+                            <div style="display: flex; gap: 12px;">
+                                <input type="text" class="form-control" placeholder="组1" value="1" style="flex: 1;">
+                                <input type="text" class="form-control" placeholder="组2" value="2" style="flex: 1;">
+                            </div>
+                        </div>
+                    `;
+
+                case 'linear_regression':
+                    return `
+                        <div class="form-group">
+                            <label class="form-label">因变量:</label>
+                            <select class="form-control" id="dependent_var">
+                                ${variableOptions}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">自变量:</label>
+                            <div class="variable-list" id="var_list_regression">
+                                ${Object.keys(currentData || {}).map(varName => 
+                                    `<div class="variable-list-item" onclick="toggleVariable(this, 'regression')">${varName}</div>`
+                                ).join('')}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">方法:</label>
+                            <select class="form-control">
+                                <option value="enter">输入</option>
+                                <option value="stepwise">逐步</option>
+                                <option value="remove">删除</option>
+                                <option value="backward">向后</option>
+                                <option value="forward">向前</option>
+                            </select>
+                        </div>
+                    `;
+
+                case 'bar':
+                case 'line':
+                case 'scatter':
+                case 'histogram':
+                case 'boxplot':
+                case 'heatmap':
+                case 'matrix':
+                    return generateChartDialog(type);
+
                 default:
-                    content = `<h3 style="margin-bottom: 20px;">${section}</h3><p style="color: var(--text-secondary);">此功能正在开发中...</p>`;
+                    return `
+                        <div style="text-align: center; padding: 40px; color: var(--text-tertiary);">
+                            <p>此功能正在开发中...</p>
+                            <p style="margin-top: 8px; font-size: 13px;">分析类型: ${type}</p>
+                        </div>
+                    `;
             }
-            
-            analysisContent.innerHTML = content;
         }
-        
-        // 关闭分析面板
-        function closeAnalysisPanel() {
-            const analysisPanel = document.getElementById('analysis_panel');
-            analysisPanel.classList.remove('active');
+
+        // 生成图表对话框
+        function generateChartDialog(chartType) {
+            const variableOptions = generateVariableOptions();
+            const chartNames = {
+                'bar': '条形图',
+                'line': '折线图',
+                'scatter': '散点图',
+                'histogram': '直方图',
+                'boxplot': '箱线图',
+                'heatmap': '热图',
+                'matrix': '矩阵图'
+            };
+
+            let content = `
+                <div class="form-group">
+                    <label class="form-label">图表类型: ${chartNames[chartType]}</label>
+                </div>
+            `;
+
+            if (chartType === 'bar' || chartType === 'line') {
+                content += `
+                    <div class="form-group">
+                        <label class="form-label">X轴变量:</label>
+                        <select class="form-control" id="x_var">
+                            ${variableOptions}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Y轴变量:</label>
+                        <select class="form-control" id="y_var">
+                            ${variableOptions}
+                        </select>
+                    </div>
+                `;
+            } else if (chartType === 'scatter') {
+                content += `
+                    <div class="form-group">
+                        <label class="form-label">X轴变量:</label>
+                        <select class="form-control" id="x_var">
+                            ${variableOptions}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Y轴变量:</label>
+                        <select class="form-control" id="y_var">
+                            ${variableOptions}
+                        </select>
+                    </div>
+                `;
+            } else if (chartType === 'histogram' || chartType === 'boxplot') {
+                content += `
+                    <div class="form-group">
+                        <label class="form-label">变量:</label>
+                        <select class="form-control" id="var">
+                            ${variableOptions}
+                        </select>
+                    </div>
+                `;
+            } else if (chartType === 'matrix') {
+                content += `
+                    <div class="form-group">
+                        <label class="form-label">变量 (矩阵图):</label>
+                        <div class="variable-list" id="var_list_matrix">
+                            ${Object.keys(currentData || {}).map(varName => 
+                                `<div class="variable-list-item" onclick="toggleVariable(this, 'matrix')">${varName}</div>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+            } else if (chartType === 'heatmap') {
+                content += `
+                    <div class="form-group">
+                        <label class="form-label">X轴变量:</label>
+                        <select class="form-control" id="x_var">
+                            ${variableOptions}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Y轴变量:</label>
+                        <select class="form-control" id="y_var">
+                            ${variableOptions}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">值变量:</label>
+                        <select class="form-control" id="value_var">
+                            ${variableOptions}
+                        </select>
+                    </div>
+                `;
+            }
+
+            return content;
         }
-        
-        // 运行描述性分析
-        async function runDescriptiveAnalysis() {
+
+        function toggleVariable(element, type) {
+            element.classList.toggle('selected');
+        }
+
+        function closeDialog() {
+            document.getElementById('analysis_dialog').classList.remove('active');
+            currentAnalysis = null;
+        }
+
+        function showChart(chartType) {
+            showAnalysis(chartType);
+        }
+
+        function runCurrentAnalysis() {
+            if (!currentAnalysis) return;
+
+            closeDialog();
+            showMessage('正在运行分析...', 'info');
+
+            setTimeout(() => {
+                const chartTypes = ['bar', 'line', 'scatter', 'histogram', 'boxplot', 'heatmap', 'matrix', 'roc', 'pp', 'qq'];
+                
+                if (chartTypes.includes(currentAnalysis)) {
+                    generateChart(currentAnalysis);
+                } else {
+                    runStatisticalAnalysis(currentAnalysis);
+                }
+            }, 500);
+        }
+
+        async function runStatisticalAnalysis(type) {
             if (!currentData) {
-                alert('请先加载数据');
+                showMessage('请先加载数据', 'error');
                 return;
             }
-            
-            const variables = Object.keys(currentData);
-            document.getElementById('analysis_content').innerHTML = '<div class="loading"><div class="loading-spinner"></div><span style="color: var(--text-secondary);">正在计算...</span></div>';
-            
+
             try {
-                const response = await statsAnalyzer.descriptiveStats(variables);
-                
-                if (response.status === 'success') {
-                    const result = response.data;
-                    
-                    let html = '<h3 style="margin-bottom: 20px;">描述性统计结果</h3>';
-                    html += '<table class="result-table">';
-                    html += '<tr><th>统计量</th>';
-                    variables.forEach(varName => {
-                        html += `<th>${varName}</th>`;
-                    });
-                    html += '</tr>';
-                    
-                    const stats = ['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max'];
-                    stats.forEach(stat => {
-                        html += `<tr><td>${stat}</td>`;
-                        variables.forEach(varName => {
-                            if (result[varName] && result[varName][stat] !== undefined) {
-                                html += `<td>${result[varName][stat].toFixed(2)}</td>`;
-                            } else {
-                                html += '<td>-</td>';
-                            }
-                        });
-                        html += '</tr>';
-                    });
-                    html += '</table>';
-                    
-                    document.getElementById('analysis_content').innerHTML = html;
-                    updateOutputView(html);
+                const variables = Object.keys(currentData);
+                let result;
+
+                switch(type) {
+                    case 'descriptives':
+                    case 'frequencies':
+                        result = await statsAnalyzer.descriptiveStats(variables);
+                        break;
+                    case 'bivariate':
+                        result = await statsAnalyzer.correlation(variables);
+                        break;
+                    default:
+                        result = { status: 'success', data: {} };
+                }
+
+                if (result.status === 'success') {
+                    displayOutput(type, result.data);
+                    showMessage('分析完成', 'success');
                 } else {
-                    document.getElementById('analysis_content').innerHTML = `<div class="message error">${response.message}</div>`;
+                    showMessage('分析失败: ' + result.message, 'error');
                 }
             } catch (error) {
-                console.error('Error running descriptive analysis:', error);
-                document.getElementById('analysis_content').innerHTML = '<div class="message error">运行分析时出错</div>';
+                console.error('运行分析时出错:', error);
+                showMessage('运行分析时出错', 'error');
             }
         }
-        
-        // 更新输出视图
-        function updateOutputView(content) {
+
+        function generateChart(chartType) {
+            if (!currentData) {
+                showMessage('请先加载数据', 'error');
+                return;
+            }
+
             const outputContent = document.getElementById('output_content');
-            outputContent.innerHTML += `<div style="margin-bottom: 32px; padding-bottom: 24px; border-bottom: 1px solid var(--border);">${content}</div>`;
+            const chartId = 'chart_' + Date.now();
+
+            const chartTitles = {
+                'bar': '条形图',
+                'line': '折线图',
+                'scatter': '散点图',
+                'histogram': '直方图',
+                'boxplot': '箱线图',
+                'heatmap': '热图',
+                'matrix': '矩阵图'
+            };
+
+            const outputHtml = `
+                <div class="output-item">
+                    <div class="output-title">${chartTitles[chartType]}</div>
+                    <div id="${chartId}" class="chart-container"></div>
+                </div>
+            `;
+
+            if (outputContent.querySelector('div')) {
+                outputContent.innerHTML += outputHtml;
+            } else {
+                outputContent.innerHTML = outputHtml;
+            }
+
+            switchTab('output');
+
+            setTimeout(() => {
+                renderChart(chartId, chartType);
+            }, 100);
+
+            showMessage('图表已生成', 'success');
         }
-        
-        // 清除输出
-        function clearOutput() {
-            document.getElementById('output_content').innerHTML = '<p style="text-align: center; color: var(--text-tertiary); margin-top: 60px; font-size: 14px;">输出将显示在这里</p>';
+
+        function renderChart(containerId, chartType) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            const chart = echarts.init(container);
+            let option = {};
+            const variables = Object.keys(currentData);
+
+            switch(chartType) {
+                case 'bar':
+                    option = {
+                        title: { text: '条形图', left: 'center' },
+                        tooltip: { trigger: 'axis' },
+                        xAxis: { type: 'category', data: currentData[variables[0]].slice(0, 20) },
+                        yAxis: { type: 'value' },
+                        series: [{
+                            name: variables[1],
+                            type: 'bar',
+                            data: currentData[variables[1]].slice(0, 20).map(v => typeof v === 'number' ? v : 0),
+                            itemStyle: { color: '#1890ff' }
+                        }]
+                    };
+                    break;
+
+                case 'line':
+                    option = {
+                        title: { text: '折线图', left: 'center' },
+                        tooltip: { trigger: 'axis' },
+                        xAxis: { type: 'category', data: currentData[variables[0]].slice(0, 20) },
+                        yAxis: { type: 'value' },
+                        series: [{
+                            name: variables[1],
+                            type: 'line',
+                            data: currentData[variables[1]].slice(0, 20).map(v => typeof v === 'number' ? v : 0),
+                            smooth: true,
+                            itemStyle: { color: '#1890ff' }
+                        }]
+                    };
+                    break;
+
+                case 'scatter':
+                    option = {
+                        title: { text: '散点图', left: 'center' },
+                        tooltip: { trigger: 'item' },
+                        xAxis: { type: 'value', name: variables[0] },
+                        yAxis: { type: 'value', name: variables[1] },
+                        series: [{
+                            type: 'scatter',
+                            data: currentData[variables[0]].slice(0, 50).map((v, i) => [
+                                typeof v === 'number' ? v : 0,
+                                typeof currentData[variables[1]][i] === 'number' ? currentData[variables[1]][i] : 0
+                            ]),
+                            itemStyle: { color: '#1890ff' }
+                        }]
+                    };
+                    break;
+
+                case 'histogram':
+                    const histData = currentData[variables[0]].filter(v => typeof v === 'number');
+                    option = {
+                        title: { text: '直方图', left: 'center' },
+                        tooltip: { trigger: 'axis' },
+                        xAxis: { type: 'category' },
+                        yAxis: { type: 'value', name: '频数' },
+                        series: [{
+                            type: 'bar',
+                            data: calculateHistogram(histData, 10),
+                            itemStyle: { color: '#1890ff' }
+                        }]
+                    };
+                    break;
+
+                case 'boxplot':
+                    const boxData = variables.slice(0, 5).map(varName => 
+                        currentData[varName].filter(v => typeof v === 'number')
+                    );
+                    option = {
+                        title: { text: '箱线图', left: 'center' },
+                        tooltip: { trigger: 'item' },
+                        xAxis: { type: 'category', data: variables.slice(0, 5) },
+                        yAxis: { type: 'value' },
+                        series: [{
+                            type: 'boxplot',
+                            data: boxData.map(d => calculateBoxplotData(d)),
+                            itemStyle: { color: '#1890ff' }
+                        }]
+                    };
+                    break;
+
+                case 'heatmap':
+                    const heatData = [];
+                    for (let i = 0; i < Math.min(20, currentData[variables[0]].length); i++) {
+                        for (let j = 0; j < Math.min(20, variables.length); j++) {
+                            heatData.push([i, j, typeof currentData[variables[j]][i] === 'number' ? currentData[variables[j]][i] : 0]);
+                        }
+                    }
+                    option = {
+                        title: { text: '热图', left: 'center' },
+                        tooltip: { position: 'top' },
+                        grid: { height: '50%', top: '10%' },
+                        xAxis: { type: 'category', data: Array.from({length: 20}, (_, i) => i + 1), splitArea: { show: true } },
+                        yAxis: { type: 'category', data: variables.slice(0, 20), splitArea: { show: true } },
+                        visualMap: { min: 0, max: 100, calculable: true, orient: 'horizontal', left: 'center', bottom: '15%' },
+                        series: [{
+                            name: '值',
+                            type: 'heatmap',
+                            data: heatData,
+                            label: { show: true }
+                        }]
+                    };
+                    break;
+
+                case 'matrix':
+                    const matrixVars = variables.slice(0, 6);
+                    option = {
+                        title: { text: '矩阵图', left: 'center' },
+                        tooltip: {},
+                        grid: [
+                            { left: '7%', top: '7%', width: '30%', height: '30%' },
+                            { right: '7%', top: '7%', width: '30%', height: '30%' },
+                            { left: '7%', bottom: '7%', width: '30%', height: '30%' },
+                            { right: '7%', bottom: '7%', width: '30%', height: '30%' }
+                        ],
+                        xAxis: [
+                            { gridIndex: 0, type: 'value', name: matrixVars[0] },
+                            { gridIndex: 1, type: 'value', name: matrixVars[1] },
+                            { gridIndex: 2, type: 'value', name: matrixVars[0] },
+                            { gridIndex: 3, type: 'value', name: matrixVars[2] }
+                        ],
+                        yAxis: [
+                            { gridIndex: 0, type: 'value', name: matrixVars[1] },
+                            { gridIndex: 1, type: 'value', name: matrixVars[2] },
+                            { gridIndex: 2, type: 'value', name: matrixVars[2] },
+                            { gridIndex: 3, type: 'value', name: matrixVars[1] }
+                        ],
+                        series: [
+                            {
+                                xAxisIndex: 0, yAxisIndex: 0,
+                                type: 'scatter',
+                                data: matrixVars[0].slice(0, 50).map((v, i) => [
+                                    typeof currentData[matrixVars[0]][i], typeof currentData[matrixVars[1]][i]
+                                ])
+                            },
+                            {
+                                xAxisIndex: 1, yAxisIndex: 1,
+                                type: 'scatter',
+                                data: matrixVars[1].slice(0, 50).map((v, i) => [
+                                    typeof currentData[matrixVars[1]][i], typeof currentData[matrixVars[2]][i]
+                                ])
+                            },
+                            {
+                                xAxisIndex: 2, yAxisIndex: 2,
+                                type: 'scatter',
+                                data: matrixVars[0].slice(0, 50).map((v, i) => [
+                                    typeof currentData[matrixVars[0]][i], typeof currentData[matrixVars[2]][i]
+                                ])
+                            },
+                            {
+                                xAxisIndex: 3, yAxisIndex: 3,
+                                type: 'scatter',
+                                data: matrixVars[2].slice(0, 50).map((v, i) => [
+                                    typeof currentData[matrixVars[2]][i], typeof currentData[matrixVars[1]][i]
+                                ])
+                            }
+                        ]
+                    };
+                    break;
+            }
+
+            chart.setOption(option);
+
+            window.addEventListener('resize', () => {
+                chart.resize();
+            });
         }
-        
-        // 菜单函数
+
+        function calculateHistogram(data, bins) {
+            if (!data || data.length === 0) return [];
+            const min = Math.min(...data);
+            const max = Math.max(...data);
+            const binWidth = (max - min) / bins;
+            const result = Array(bins).fill(0);
+            data.forEach(v => {
+                const index = Math.min(Math.floor((v - min) / binWidth), bins - 1);
+                result[index]++;
+            });
+            return result;
+        }
+
+        function calculateBoxplotData(data) {
+            if (!data || data.length === 0) return [0, 0, 0, 0, 0];
+            const sorted = data.sort((a, b) => a - b);
+            const q1 = sorted[Math.floor(sorted.length * 0.25)];
+            const q2 = sorted[Math.floor(sorted.length * 0.5)];
+            const q3 = sorted[Math.floor(sorted.length * 0.75)];
+            const min = sorted[0];
+            const max = sorted[sorted.length - 1];
+            return [min, q1, q2, q3, max];
+        }
+
+        function displayOutput(type, data) {
+            const outputContent = document.getElementById('output_content');
+            const variables = Object.keys(data);
+
+            let html = '<div class="output-item"><div class="output-title">分析结果</div>';
+
+            if (variables.length > 0) {
+                html += '<table class="output-table"><thead><tr><th>统计量</th>';
+                variables.forEach(v => html += `<th>${v}</th>`);
+                html += '</tr></thead><tbody>';
+
+                const stats = ['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max'];
+                stats.forEach(stat => {
+                    html += `<tr><td>${stat}</td>`;
+                    variables.forEach(v => {
+                        const val = data[v] && data[v][stat] !== undefined ? data[v][stat].toFixed(2) : '-';
+                        html += `<td>${val}</td>`;
+                    });
+                    html += '</tr>';
+                });
+
+                html += '</tbody></table>';
+            }
+
+            html += '</div>';
+
+            if (outputContent.querySelector('div')) {
+                outputContent.innerHTML += html;
+            } else {
+                outputContent.innerHTML = html;
+            }
+
+            switchTab('output');
+        }
+
+        function showMessage(text, type) {
+            const container = document.getElementById('message_container');
+            const msg = document.createElement('div');
+            msg.className = `message ${type}`;
+            msg.textContent = text;
+            container.appendChild(msg);
+
+            setTimeout(() => {
+                msg.remove();
+            }, 3000);
+        }
+
         function newProject() {
             if (confirm('确定要新建项目吗？当前未保存的数据将会丢失。')) {
                 createEmptyTable(100, 10);
                 initVariableView();
                 currentData = null;
-                alert('新项目已创建');
+                showMessage('新项目已创建', 'success');
             }
         }
-        
+
         function openProject() {
-            alert('打开项目功能正在开发中');
+            showMessage('打开项目功能正在开发中', 'info');
         }
-        
+
         function saveProject() {
-            const datasetName = document.getElementById('dataset_name').value;
-            alert(`项目 "${datasetName}" 已保存`);
+            const datasetName = '未命名数据集';
+            showMessage(`项目已保存`, 'success');
         }
-        
-        function exportData() {
-            alert('导出数据功能正在开发中');
+
+        function saveProjectAs() {
+            showMessage('另存为功能正在开发中', 'info');
         }
-        
+
         function importData() {
-            alert('导入数据功能正在开发中');
+            showMessage('读取数据功能正在开发中', 'info');
         }
-        
+
+        function exportData() {
+            showMessage('导出数据功能正在开发中', 'info');
+        }
+
         function exitApp() {
             if (confirm('确定要退出应用吗？')) {
-                alert('应用将退出');
+                showMessage('应用将退出', 'info');
             }
         }
-        
+
+        function undo() {
+            showMessage('撤销功能正在开发中', 'info');
+        }
+
+        function redo() {
+            showMessage('重做功能正在开发中', 'info');
+        }
+
         function cutData() {
-            alert('剪切功能正在开发中');
+            showMessage('剪切功能正在开发中', 'info');
         }
-        
+
         function copyData() {
-            alert('复制功能正在开发中');
+            showMessage('复制功能正在开发中', 'info');
         }
-        
+
         function pasteData() {
-            alert('粘贴功能正在开发中');
+            showMessage('粘贴功能正在开发中', 'info');
         }
-        
+
         function clearData() {
             if (confirm('确定要清除所有数据吗？')) {
                 createEmptyTable(100, 10);
                 currentData = null;
-                alert('数据已清除');
+                showMessage('数据已清除', 'success');
             }
         }
-        
-        function toggleProperties() {
-            const propertiesPanel = document.getElementById('properties_panel');
-            propertiesPanel.classList.toggle('active');
+
+        function find() {
+            showMessage('查找功能正在开发中', 'info');
         }
-        
-        function resetLayout() {
-            document.getElementById('properties_panel').classList.add('active');
-            alert('布局已重置');
+
+        function replace() {
+            showMessage('替换功能正在开发中', 'info');
         }
-        
+
         function defineVariables() {
-            switchTab('variable_view');
+            switchToVariableView();
         }
-        
-        function transformData() {
-            showAnalysis('transform');
+
+        function insertVariable() {
+            showMessage('插入变量功能正在开发中', 'info');
         }
-        
-        function cleanData() {
-            showAnalysis('data_prep');
+
+        function insertCase() {
+            showMessage('插入个案功能正在开发中', 'info');
         }
-        
-        function showSettings() {
-            alert('设置功能正在开发中');
+
+        function computeVariable() {
+            showAnalysis('compute');
         }
-        
+
+        function countValues() {
+            showMessage('计数功能正在开发中', 'info');
+        }
+
+        function recodeIntoSame() {
+            showMessage('重新编码功能正在开发中', 'info');
+        }
+
+        function recodeIntoDifferent() {
+            showMessage('重新编码功能正在开发中', 'info');
+        }
+
+        function visualBinning() {
+            showMessage('可视离散化功能正在开发中', 'info');
+        }
+
+        function sortCases() {
+            showMessage('排序个案功能正在开发中', 'info');
+        }
+
+        function sortVariables() {
+            showMessage('排序变量功能正在开发中', 'info');
+        }
+
+        function transpose() {
+            showMessage('转置功能正在开发中', 'info');
+        }
+
+        function mergeFiles() {
+            showMessage('合并文件功能正在开发中', 'info');
+        }
+
+        function splitFile() {
+            showMessage('拆分文件功能正在开发中', 'info');
+        }
+
+        function selectCases() {
+            showMessage('选择个案功能正在开发中', 'info');
+        }
+
+        function weightCases() {
+            showMessage('加权个案功能正在开发中', 'info');
+        }
+
+        function dateTime() {
+            showMessage('日期和时间功能正在开发中', 'info');
+        }
+
+        function createTimeSeries() {
+            showMessage('创建时间序列功能正在开发中', 'info');
+        }
+
+        function replaceMissingValues() {
+            showMessage('替换缺失值功能正在开发中', 'info');
+        }
+
+        function randomNumberGenerators() {
+            showMessage('随机数字生成器功能正在开发中', 'info');
+        }
+
+        function rankCases() {
+            showMessage('个案排秩功能正在开发中', 'info');
+        }
+
+        function resetLayout() {
+            showMessage('布局已重置', 'success');
+        }
+
+        function minimizeAll() {
+            showMessage('最小化全部功能正在开发中', 'info');
+        }
+
+        function restoreAll() {
+            showMessage('还原全部功能正在开发中', 'info');
+        }
+
         function showHelp() {
-            alert('帮助文档正在开发中');
+            showMessage('帮助功能正在开发中', 'info');
         }
-        
+
         function showTutorial() {
-            alert('教程正在开发中');
+            showMessage('教程功能正在开发中', 'info');
         }
-        
+
+        function showSettings() {
+            showMessage('设置功能正在开发中', 'info');
+        }
+
         function showAbout() {
             alert('AxaltyX 版本 1.0.0\n专业统计分析软件\n版权所有 © 2026 TBJ114');
         }
-        
-        function runAnalysis() {
-            showAnalysis('descriptive');
-        }
-        
-        // 初始化应用
+
         window.onload = function() {
-            console.log('Initializing app...');
+            console.log('初始化应用...');
             initApp();
-            console.log('App initialized');
+            console.log('应用初始化完成');
         };
+
+        if (window.electronAPI) {
+            window.electronAPI.onMenuAction((event, action) => {
+                console.log('菜单操作:', action);
+                if (action === 'new-project') newProject();
+                else if (action === 'open-project') openProject();
+                else if (action === 'save-project') saveProject();
+            });
+        }
     </script>
 </body>
 </html>
