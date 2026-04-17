@@ -207,6 +207,225 @@ class StatsAnalyzer {
     async frequencyAnalysis(variable) {
         return await this.sendRequest('/api/frequency_analysis', { variable });
     }
+    
+    /**
+     * 配对样本t检验
+     * @param {string} variable1 - 第一个变量
+     * @param {string} variable2 - 第二个变量
+     * @returns {Promise} 检验结果
+     */
+    async tTestPaired(variable1, variable2) {
+        return await this.sendRequest('/api/t_test_paired', {
+            variable1,
+            variable2
+        });
+    }
+    
+    /**
+     * 单因素方差分析
+     * @param {string} dependent - 因变量
+     * @param {string} independent - 自变量
+     * @returns {Promise} 分析结果
+     */
+    async anovaOneWay(dependent, independent) {
+        return await this.sendRequest('/api/anova_one_way', {
+            dependent,
+            independent
+        });
+    }
+    
+    /**
+     * 多因素方差分析
+     * @param {string} dependent - 因变量
+     * @param {Array} independents - 自变量列表
+     * @returns {Promise} 分析结果
+     */
+    async anovaTwoWay(dependent, independents) {
+        return await this.sendRequest('/api/anova_two_way', {
+            dependent,
+            independents
+        });
+    }
+    
+    /**
+     * 协方差分析
+     * @param {string} dependent - 因变量
+     * @param {string} independent - 自变量
+     * @param {Array} covariates - 协变量列表
+     * @returns {Promise} 分析结果
+     */
+    async ancova(dependent, independent, covariates) {
+        return await this.sendRequest('/api/ancova', {
+            dependent,
+            independent,
+            covariates
+        });
+    }
+    
+    /**
+     * 偏相关分析
+     * @param {string} variable1 - 第一个变量
+     * @param {string} variable2 - 第二个变量
+     * @param {Array} controlVariables - 控制变量列表
+     * @returns {Promise} 偏相关系数
+     */
+    async partialCorrelation(variable1, variable2, controlVariables) {
+        return await this.sendRequest('/api/partial_correlation', {
+            variable1,
+            variable2,
+            control_variables: controlVariables
+        });
+    }
+    
+    /**
+     * 多元线性回归
+     * @param {string} dependent - 因变量
+     * @param {Array} independents - 自变量列表
+     * @returns {Promise} 回归结果
+     */
+    async multipleRegression(dependent, independents) {
+        return await this.sendRequest('/api/multiple_regression', {
+            dependent,
+            independents
+        });
+    }
+    
+    /**
+     * Logistic回归
+     * @param {string} dependent - 因变量
+     * @param {Array} independents - 自变量列表
+     * @returns {Promise} 回归结果
+     */
+    async logisticRegression(dependent, independents) {
+        return await this.sendRequest('/api/logistic_regression', {
+            dependent,
+            independents
+        });
+    }
+    
+    /**
+     * 因子分析
+     * @param {Array} variables - 变量列表
+     * @param {number} nFactors - 因子数量
+     * @returns {Promise} 因子分析结果
+     */
+    async factorAnalysis(variables, nFactors) {
+        return await this.sendRequest('/api/factor_analysis', {
+            variables,
+            n_factors: nFactors
+        });
+    }
+    
+    /**
+     * 主成分分析
+     * @param {Array} variables - 变量列表
+     * @returns {Promise} 主成分分析结果
+     */
+    async principalComponentAnalysis(variables) {
+        return await this.sendRequest('/api/pca', {
+            variables
+        });
+    }
+    
+    /**
+     * 聚类分析
+     * @param {Array} variables - 变量列表
+     * @param {number} nClusters - 聚类数量
+     * @returns {Promise} 聚类分析结果
+     */
+    async clusterAnalysis(variables, nClusters) {
+        return await this.sendRequest('/api/cluster_analysis', {
+            variables,
+            n_clusters: nClusters
+        });
+    }
+    
+    /**
+     * 正态性检验
+     * @param {string} variable - 变量名
+     * @returns {Promise} 检验结果
+     */
+    async normalityTest(variable) {
+        return await this.sendRequest('/api/normality_test', {
+            variable
+        });
+    }
+    
+    /**
+     * 非参数检验
+     * @param {string} variable - 变量名
+     * @param {string} method - 检验方法：mann_whitney, wilcoxon, kruskal_wallis
+     * @returns {Promise} 检验结果
+     */
+    async nonParametricTest(variable, method) {
+        return await this.sendRequest('/api/non_parametric_test', {
+            variable,
+            method
+        });
+    }
+    
+    /**
+     * 生存分析
+     * @param {string} timeVariable - 时间变量
+     * @param {string} eventVariable - 事件变量
+     * @returns {Promise} 生存分析结果
+     */
+    async survivalAnalysis(timeVariable, eventVariable) {
+        return await this.sendRequest('/api/survival_analysis', {
+            time_variable: timeVariable,
+            event_variable: eventVariable
+        });
+    }
+    
+    /**
+     * Cox回归
+     * @param {string} timeVariable - 时间变量
+     * @param {string} eventVariable - 事件变量
+     * @param {Array} covariates - 协变量列表
+     * @returns {Promise} 回归结果
+     */
+    async coxRegression(timeVariable, eventVariable, covariates) {
+        return await this.sendRequest('/api/cox_regression', {
+            time_variable: timeVariable,
+            event_variable: eventVariable,
+            covariates
+        });
+    }
+    
+    /**
+     * 时间序列分析
+     * @param {string} variable - 变量名
+     * @returns {Promise} 分析结果
+     */
+    async timeSeriesAnalysis(variable) {
+        return await this.sendRequest('/api/time_series_analysis', {
+            variable
+        });
+    }
+    
+    /**
+     * 可靠性分析（信度分析）
+     * @param {Array} variables - 变量列表
+     * @returns {Promise} 信度分析结果
+     */
+    async reliabilityAnalysis(variables) {
+        return await this.sendRequest('/api/reliability_analysis', {
+            variables
+        });
+    }
+    
+    /**
+     * 对应分析
+     * @param {string} rowVariable - 行变量
+     * @param {string} columnVariable - 列变量
+     * @returns {Promise} 对应分析结果
+     */
+    async correspondenceAnalysis(rowVariable, columnVariable) {
+        return await this.sendRequest('/api/correspondence_analysis', {
+            row_variable: rowVariable,
+            column_variable: columnVariable
+        });
+    }
 }
 
 // 导出StatsAnalyzer类

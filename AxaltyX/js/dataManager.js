@@ -308,6 +308,160 @@ class DataManager {
         
         this.updateVariables();
     }
+    
+    /**
+     * 计算新变量
+     * @param {string} newVariable - 新变量名
+     * @param {Function} formula - 计算函数，接收当前行的所有变量值
+     */
+    computeVariable(newVariable, formula) {
+        if (!this.data) return;
+        
+        const variables = Object.keys(this.data);
+        const rowCount = Object.values(this.data)[0].length;
+        const newValues = [];
+        
+        for (let i = 0; i < rowCount; i++) {
+            const rowData = {};
+            variables.forEach(variable => {
+                rowData[variable] = this.data[variable][i];
+            });
+            
+            try {
+                newValues.push(formula(rowData));
+            } catch (error) {
+                newValues.push(null);
+            }
+        }
+        
+        this.addVariable(newVariable, newValues);
+    }
+    
+    /**
+     * 重新编码变量
+     * @param {string} variable - 变量名
+     * @param {Object} recodeRules - 重新编码规则
+     * @param {string} newVariable - 新变量名（可选）
+     */
+    recodeVariable(variable, recodeRules, newVariable) {
+        if (!this.data || !this.data[variable]) return;
+        
+        const values = this.data[variable];
+        const newValues = values.map(value => {
+            for (const [condition, result] of Object.entries(recodeRules)) {
+                if (this.evaluateCondition(value, condition)) {
+                    return result;
+                }
+            }
+            return value;
+        });
+        
+        if (newVariable) {
+            this.addVariable(newVariable, newValues);
+        } else {
+            this.data[variable] = newValues;
+            this.updateVariables();
+        }
+    }
+    
+    /**
+     * 评估条件
+     * @param {any} value - 变量值
+     * @param {string} condition - 条件字符串
+     * @returns {boolean} 条件是否满足
+     */
+    evaluateCondition(value, condition) {
+        // 简单的条件评估，支持 =, !=, >, <, >=, <=
+        if (condition.startsWith('=')) {
+            const target = condition.substring(1).trim();
+            return value == target;
+        } else if (condition.startsWith('!=')) {
+            const target = condition.substring(2).trim();
+            return value != target;
+        } else if (condition.startsWith('>=')) {
+            const target = parseFloat(condition.substring(2).trim());
+            return value >= target;
+        } else if (condition.startsWith('<=')) {
+            const target = parseFloat(condition.substring(2).trim());
+            return value <= target;
+        } else if (condition.startsWith('>')) {
+            const target = parseFloat(condition.substring(1).trim());
+            return value > target;
+        } else if (condition.startsWith('<')) {
+            const target = parseFloat(condition.substring(1).trim());
+            return value < target;
+        }
+        return false;
+    }
+    
+    /**
+     * 标准化变量
+     * @param {string} variable - 变量名
+     * @param {string} newVariable - 新变量名（可选）
+     */
+    standardizeVariable(variable, newVariable) {
+        if (!this.data || !this.data[variable]) return;
+        
+        const values = this.data[variable];
+        const mean = this.calculateMean(values);
+        const std = this.calculateStandardDeviation(values);
+        
+        const newValues = values.map(value => {
+            if (typeof value === 'number' && !isNaN(value) && std > 0) {
+                return (value - mean) / std;
+            }
+            return null;
+        });
+        
+        if (newVariable) {
+            this.addVariable(newVariable, newValues);
+        } else {
+            this.data[variable] = newValues;
+            this.updateVariables();
+        }
+    }
+    
+    /**
+     * 计算标准差
+     * @param {Array} values - 数值数组
+     * @returns {number} 标准差
+     */
+    calculateStandardDeviation(values) {
+        const numericValues = values.filter(v => typeof v === 'number' && !isNaN(v));
+        if (numericValues.length === 0) return 0;
+        
+        const mean = this.calculateMean(numericValues);
+        const squaredDifferences = numericValues.map(v => Math.pow(v - mean, 2));
+        const variance = squaredDifferences.reduce((sum, v) => sum + v, 0) / numericValues.length;
+        
+        return Math.sqrt(variance);
+    }
+    
+    /**
+     * 变量加权
+     * @param {string} variable - 变量名
+     * @param {string} weightVariable - 权重变量名
+     * @param {string} newVariable - 新变量名（可选）
+     */
+    weightVariable(variable, weightVariable, newVariable) {
+        if (!this.data || !this.data[variable] || !this.data[weightVariable]) return;
+        
+        const values = this.data[variable];
+        const weights = this.data[weightVariable];
+        const newValues = values.map((value, index) => {
+            if (typeof value === 'number' && !isNaN(value) && typeof weights[index] === 'number' && !isNaN(weights[index])) {
+                return value * weights[index];
+            }
+            return null;
+        });
+        
+        if (newVariable) {
+            this.addVariable(newVariable, newValues);
+        } else {
+            this.data[variable] = newValues;
+            this.updateVariables();
+        }
+    }
 }
 
 // 导出DataManager类

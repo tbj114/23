@@ -484,6 +484,338 @@ class ChartManager {
             delete this.charts[containerId];
         }
     }
+    
+    /**
+     * 生成ROC曲线
+     * @param {string} containerId - 容器ID
+     * @param {Array} fpr - 假阳性率
+     * @param {Array} tpr - 真阳性率
+     * @param {number} auc - 曲线下面积
+     */
+    rocCurve(containerId, fpr, tpr, auc) {
+        const chart = this.initChart(containerId);
+        if (!chart) return;
+        
+        const option = {
+            title: {
+                text: 'ROC曲线',
+                subtext: `AUC: ${auc.toFixed(4)}`,
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+                formatter: function(params) {
+                    return `FPR: ${params.value[0].toFixed(4)}<br/>TPR: ${params.value[1].toFixed(4)}`;
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value',
+                name: '假阳性率 (FPR)',
+                min: 0,
+                max: 1
+            },
+            yAxis: {
+                type: 'value',
+                name: '真阳性率 (TPR)',
+                min: 0,
+                max: 1
+            },
+            series: [{
+                name: 'ROC曲线',
+                type: 'line',
+                data: fpr.map((value, index) => [value, tpr[index]]),
+                smooth: true,
+                itemStyle: {
+                    color: '#1890ff'
+                },
+                lineStyle: {
+                    width: 2
+                }
+            }, {
+                name: '对角线',
+                type: 'line',
+                data: [[0, 0], [1, 1]],
+                lineStyle: {
+                    type: 'dashed',
+                    color: '#999'
+                },
+                symbol: 'none'
+            }]
+        };
+        
+        chart.setOption(option);
+    }
+    
+    /**
+     * 生成P-P图
+     * @param {string} containerId - 容器ID
+     * @param {Array} observed - 观测累积概率
+     * @param {Array} expected - 期望累积概率
+     */
+    ppPlot(containerId, observed, expected) {
+        const chart = this.initChart(containerId);
+        if (!chart) return;
+        
+        const option = {
+            title: {
+                text: 'P-P图',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+                formatter: function(params) {
+                    return `观测概率: ${params.value[0].toFixed(4)}<br/>期望概率: ${params.value[1].toFixed(4)}`;
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value',
+                name: '期望累积概率',
+                min: 0,
+                max: 1
+            },
+            yAxis: {
+                type: 'value',
+                name: '观测累积概率',
+                min: 0,
+                max: 1
+            },
+            series: [{
+                name: 'P-P图',
+                type: 'scatter',
+                data: expected.map((value, index) => [value, observed[index]]),
+                itemStyle: {
+                    color: '#1890ff'
+                }
+            }, {
+                name: '参考线',
+                type: 'line',
+                data: [[0, 0], [1, 1]],
+                lineStyle: {
+                    type: 'dashed',
+                    color: '#999'
+                },
+                symbol: 'none'
+            }]
+        };
+        
+        chart.setOption(option);
+    }
+    
+    /**
+     * 生成Q-Q图
+     * @param {string} containerId - 容器ID
+     * @param {Array} observed - 观测分位数
+     * @param {Array} expected - 期望分位数
+     */
+    qqPlot(containerId, observed, expected) {
+        const chart = this.initChart(containerId);
+        if (!chart) return;
+        
+        const option = {
+            title: {
+                text: 'Q-Q图',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+                formatter: function(params) {
+                    return `观测分位数: ${params.value[0].toFixed(4)}<br/>期望分位数: ${params.value[1].toFixed(4)}`;
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value',
+                name: '期望分位数'
+            },
+            yAxis: {
+                type: 'value',
+                name: '观测分位数'
+            },
+            series: [{
+                name: 'Q-Q图',
+                type: 'scatter',
+                data: expected.map((value, index) => [value, observed[index]]),
+                itemStyle: {
+                    color: '#1890ff'
+                }
+            }, {
+                name: '参考线',
+                type: 'line',
+                data: [[Math.min(...expected), Math.min(...observed)], [Math.max(...expected), Math.max(...observed)]],
+                lineStyle: {
+                    type: 'dashed',
+                    color: '#999'
+                },
+                symbol: 'none'
+            }]
+        };
+        
+        chart.setOption(option);
+    }
+    
+    /**
+     * 生成词云图
+     * @param {string} containerId - 容器ID
+     * @param {Array} words - 词云数据，格式: [{name: '词', value: 频率}]
+     */
+    wordCloud(containerId, words) {
+        const chart = this.initChart(containerId);
+        if (!chart) return;
+        
+        const option = {
+            title: {
+                text: '词云图',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: '{b}: {c}'
+            },
+            series: [{
+                name: '词云',
+                type: 'wordCloud',
+                shape: 'circle',
+                left: 'center',
+                top: 'center',
+                width: '70%',
+                height: '70%',
+                right: null,
+                bottom: null,
+                sizeRange: [12, 60],
+                rotationRange: [-45, 45],
+                rotationStep: 45,
+                gridSize: 8,
+                drawOutOfBound: false,
+                textStyle: {
+                    fontFamily: 'sans-serif',
+                    fontWeight: 'bold',
+                    color: function() {
+                        return 'rgb(' + [
+                            Math.round(Math.random() * 160),
+                            Math.round(Math.random() * 160),
+                            Math.round(Math.random() * 160)
+                        ].join(',') + ')';
+                    }
+                },
+                emphasis: {
+                    focus: 'self',
+                    textStyle: {
+                        shadowBlur: 10,
+                        shadowColor: 'rgba(0, 0, 0, 0.3)'
+                    }
+                },
+                data: words
+            }]
+        };
+        
+        chart.setOption(option);
+    }
+    
+    /**
+     * 生成小提琴图
+     * @param {string} containerId - 容器ID
+     * @param {Object} data - 数据
+     * @param {Array} categories - 类别
+     */
+    violinChart(containerId, data, categories) {
+        const chart = this.initChart(containerId);
+        if (!chart) return;
+        
+        const option = {
+            title: {
+                text: '小提琴图',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                data: categories
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: data.map((item, index) => ({
+                name: categories[index],
+                type: 'violin',
+                data: [item],
+                itemStyle: {
+                    color: `hsl(${index * 60}, 70%, 60%)`
+                }
+            }))
+        };
+        
+        chart.setOption(option);
+    }
+    
+    /**
+     * 生成3D散点图
+     * @param {string} containerId - 容器ID
+     * @param {Array} data - 数据，格式: [[x1, y1, z1], [x2, y2, z2], ...]
+     */
+    scatter3DChart(containerId, data) {
+        const chart = this.initChart(containerId);
+        if (!chart) return;
+        
+        const option = {
+            title: {
+                text: '3D散点图',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: function(params) {
+                    return `X: ${params.value[0].toFixed(2)}<br/>Y: ${params.value[1].toFixed(2)}<br/>Z: ${params.value[2].toFixed(2)}`;
+                }
+            },
+            xAxis3D: {
+                type: 'value'
+            },
+            yAxis3D: {
+                type: 'value'
+            },
+            zAxis3D: {
+                type: 'value'
+            },
+            series: [{
+                name: '3D散点',
+                type: 'scatter3D',
+                data: data,
+                itemStyle: {
+                    color: '#1890ff'
+                }
+            }]
+        };
+        
+        chart.setOption(option);
+    }
 }
 
 // 导出ChartManager类

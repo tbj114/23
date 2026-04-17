@@ -329,11 +329,37 @@ class ProjectManager {
     exportReport(format, options = {}) {
         const report = this.generateReport(options);
         
-        // 这里可以添加实际的导出逻辑
+        // 模拟导出逻辑
         console.log(`导出报告为 ${format} 格式`);
         
-        // 返回模拟的文件路径
-        return `report.${format}`;
+        // 创建下载链接
+        let mimeType, extension;
+        switch(format) {
+            case 'pdf':
+                mimeType = 'application/pdf';
+                extension = 'pdf';
+                break;
+            case 'docx':
+                mimeType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                extension = 'docx';
+                break;
+            case 'html':
+            default:
+                mimeType = 'text/html';
+                extension = 'html';
+        }
+        
+        const blob = new Blob([report], { type: mimeType });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `report.${extension}`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        
+        return `report.${extension}`;
     }
 }
 
