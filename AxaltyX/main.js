@@ -1,10 +1,30 @@
 const { app, BrowserWindow, Menu } = require('electron');
 const path = require('path');
+const { spawn } = require('child_process');
 
 // 保持窗口对象的全局引用，避免被垃圾回收
 let mainWindow;
+// 保持Python服务器进程的引用
+let pythonServer;
 
 function createWindow() {
+  // 启动Python服务器
+  console.log('启动Python统计服务器...');
+  const pythonExecutable = process.platform === 'win32' ? 'python' : 'python3';
+  pythonServer = spawn(pythonExecutable, [path.join(__dirname, 'python', 'server.py')]);
+  
+  pythonServer.stdout.on('data', (data) => {
+    console.log(`Python服务器输出: ${data}`);
+  });
+  
+  pythonServer.stderr.on('data', (data) => {
+    console.error(`Python服务器错误: ${data}`);
+  });
+  
+  pythonServer.on('close', (code) => {
+    console.log(`Python服务器进程退出，代码: ${code}`);
+  });
+  
   // 创建浏览器窗口
   mainWindow = new BrowserWindow({
     width: 1200,
@@ -145,10 +165,32 @@ app.on('ready', createWindow);
 
 // 关闭所有窗口时退出应用
 app.on('window-all-closed', function () {
+  if (pythonServer) {
+    console.log('停止Python服务器...');
+    pythonServer.kill();
+  }
   if (process.platform !== 'darwin') app.quit();
 });
 
 // 激活应用时创建窗口（Mac）
 app.on('activate', function () {
   if (mainWindow === null) createWindow();
+  // 确保Python服务器正在运行
+  if (!pythonServer || pythonServer.killed) {
+    console.log('重新启动Python服务器...');
+    const pythonExecutable = process.platform === 'win32' ? 'python' : 'python3';
+    pythonServer = spawn(pythonExecutable, [path.join(__dirname, 'python', 'server.py')]);
+    
+    pythonServer.stdout.on('data', (data) => {
+      console.log(`Python服务器输出: ${data}`);
+    });
+    
+    pythonServer.stderr.on('data', (data) => {
+      console.error(`Python服务器错误: ${data}`);
+    });
+    
+    pythonServer.on('close', (code) => {
+      console.log(`Python服务器进程退出，代码: ${code}`);
+    });
+  }
 });
