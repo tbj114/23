@@ -6,3 +6,7 @@ statsmodels
 matplotlib
 seaborn
 plotly
+flask
+lifelines
+textblob
+wordcloud
