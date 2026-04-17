@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AxaltyX - 专业统计分析软件</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+        
+        .app-container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* 左侧边栏 */
+        .sidebar {
+            width: 240px;
+            background-color: #fff;
+            border-right: 1px solid #e8e8e8;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .sidebar-section {
+            margin-bottom: 30px;
+        }
+        
+        .sidebar-section h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #999;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+        
+        .sidebar-item {
+            padding: 8px 12px;
+            margin-bottom: 4px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .sidebar-item:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .sidebar-item.active {
+            background-color: #e6f7ff;
+            color: #1890ff;
+        }
+        
+        /* 主工作区 */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* 顶部工具栏 */
+        .toolbar {
+            height: 60px;
+            background-color: #fff;
+            border-bottom: 1px solid #e8e8e8;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            justify-content: space-between;
+        }
+        
+        .toolbar-left {
+            display: flex;
+            align-items: center;
+        }
+        
+        .toolbar-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .toolbar-right {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 6px 16px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            background-color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        
+        .btn:hover {
+            border-color: #1890ff;
+            color: #1890ff;
+        }
+        
+        .btn-primary {
+            background-color: #1890ff;
+            border-color: #1890ff;
+            color: #fff;
+        }
+        
+        .btn-primary:hover {
+            background-color: #40a9ff;
+            border-color: #40a9ff;
+            color: #fff;
+        }
+        
+        /* 工作区域 */
+        .workspace {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: #fafafa;
+        }
+        
+        /* 数据表格 */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        
+        .data-table th {
+            background-color: #fafafa;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .data-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        
+        /* 右侧面板 */
+        .right-panel {
+            width: 300px;
+            background-color: #fff;
+            border-left: 1px solid #e8e8e8;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .panel-section {
+            margin-bottom: 20px;
+        }
+        
+        .panel-section h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: #666;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d9d9d9;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        /* 欢迎页面 */
+        .welcome-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+        }
+        
+        .welcome-logo {
+            font-size: 48px;
+            font-weight: 700;
+            color: #1890ff;
+            margin-bottom: 20px;
+        }
+        
+        .welcome-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .welcome-subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        
+        .welcome-actions {
+            display: flex;
+            gap: 20px;
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1890ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* 分析结果 */
+        .analysis-result {
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .analysis-result h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .analysis-result table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .analysis-result table th,
+        .analysis-result table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #e8e8e8;
+        }
+        
+        .analysis-result table th {
+            background-color: #fafafa;
+            font-weight: 600;
+        }
+        
+        /* 图表容器 */
+        .chart-container {
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.09);
+            border-radius: 4px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .chart-container h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .chart {}
+        
+        /* 标签页 */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e8e8e8;
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab:hover {
+            color: #1890ff;
+        }
+        
+        .tab.active {
+            color: #1890ff;
+            border-bottom-color: #1890ff;
+        }
+        
+        /* 消息提示 */
+        .message {
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .message.success {
+            background-color: #f6ffed;
+            border: 1px solid #b7eb8f;
+            color: #52c41a;
+        }
+        
+        .message.error {
+            background-color: #fff1f0;
+            border: 1px solid #ffccc7;
+            color: #ff4d4f;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .right-panel {
+                width: 250px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 200px;
+            }
+            
+            .right-panel {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 左侧边栏 -->
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <h3>数据集</h3>
+                <div class="sidebar-item active" data-section="data-management">当前数据集</div>
+                <div class="sidebar-item" data-section="variable-management">变量管理</div>
+                <div class="sidebar-item" data-section="data-import">数据导入</div>
+                <div class="sidebar-item" data-section="data-cleaning">数据清洗</div>
+            </div>
+            <div class="sidebar-section">
+                <h3>分析</h3>
+                <div class="sidebar-item" data-section="descriptive-stats">描述性统计</div>
+                <div class="sidebar-item" data-section="hypothesis-test">假设检验</div>
+                <div class="sidebar-item" data-section="regression">回归分析</div>
+                <div class="sidebar-item" data-section="advanced-analysis">高级分析</div>
+            </div>
+            <div class="sidebar-section">
+                <h3>绘图</h3>
+                <div class="sidebar-item" data-section="basic-charts">基础图表</div>
+                <div class="sidebar-item" data-section="advanced-charts">高级图表</div>
+                <div class="sidebar-item" data-section="interactive-visualization">交互式可视化</div>
+            </div>
+        </div>
+        
+        <!-- 主工作区 -->
+        <div class="main-content">
+            <!-- 顶部工具栏 -->
+            <div class="toolbar">
+                <div class="toolbar-left">
+                    <div class="toolbar-title" id="toolbar-title">数据管理</div>
+                </div>
+                <div class="toolbar-right">
+                    <button class="btn" id="import-btn">导入数据</button>
+                    <button class="btn" id="export-btn">导出数据</button>
+                    <button class="btn btn-primary" id="new-variable-btn">新建变量</button>
+                </div>
+            </div>
+            
+            <!-- 工作区域 -->
+            <div class="workspace">
+                <!-- 数据管理 -->
+                <div id="data-management" class="section active">
+                    <div class="welcome-page">
+                        <div class="welcome-logo">AxaltyX</div>
+                        <div class="welcome-title">专业统计分析软件</div>
+                        <div class="welcome-subtitle">为学术科研提供强大的数据分析能力</div>
+                        <div class="welcome-actions">
+                            <button class="btn btn-primary" id="welcome-import-btn">导入数据</button>
+                            <button class="btn" id="welcome-new-project-btn">新建项目</button>
+                            <button class="btn" id="welcome-open-example-btn">打开示例</button>
+                        </div>
+                    </div>
+                    <div id="data-table-container" style="display: none;">
+                        <table class="data-table" id="data-table">
+                            <thead id="table-header">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>姓名</th>
+                                    <th>年龄</th>
+                                    <th>性别</th>
+                                    <th>得分</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-body">
+                                <!-- 数据将通过JavaScript动态添加 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- 描述性统计 -->
+                <div id="descriptive-stats" class="section" style="display: none;">
+                    <div class="analysis-result">
+                        <h3>描述性统计</h3>
+                        <div class="form-group">
+                            <label>选择变量</label>
+                            <select id="stats-variables" multiple style="height: 100px;">
+                                <option value="age">年龄</option>
+                                <option value="score">得分</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" id="calculate-stats-btn">计算统计量</button>
+                        <div id="stats-result" style="margin-top: 20px;"></div>
+                    </div>
+                </div>
+                
+                <!-- 假设检验 -->
+                <div id="hypothesis-test" class="section" style="display: none;">
+                    <div class="tabs">
+                        <div class="tab active" data-test="t-test-one-sample">单样本t检验</div>
+                        <div class="tab" data-test="t-test-independent">独立样本t检验</div>
+                        <div class="tab" data-test="chi-square">卡方检验</div>
+                    </div>
+                    
+                    <!-- 单样本t检验 -->
+                    <div id="t-test-one-sample" class="test-panel active">
+                        <div class="form-group">
+                            <label>选择变量</label>
+                            <select id="t-test-variable">
+                                <option value="age">年龄</option>
+                                <option value="score">得分</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>总体均值</label>
+                            <input type="number" id="population-mean" value="25">
+                        </div>
+                        <button class="btn btn-primary" id="run-t-test-btn">运行检验</button>
+                        <div id="t-test-result" style="margin-top: 20px;"></div>
+                    </div>
+                    
+                    <!-- 独立样本t检验 -->
+                    <div id="t-test-independent" class="test-panel" style="display: none;">
+                        <div class="form-group">
+                            <label>因变量</label>
+                            <select id="indep-dependent">
+                                <option value="score">得分</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>分组变量</label>
+                            <select id="indep-group">
+                                <option value="gender">性别</option>
+                                <option value="group">组别</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" id="run-indep-t-test-btn">运行检验</button>
+                        <div id="indep-t-test-result" style="margin-top: 20px;"></div>
+                    </div>
+                    
+                    <!-- 卡方检验 -->
+                    <div id="chi-square" class="test-panel" style="display: none;">
+                        <div class="form-group">
+                            <label>变量1</label>
+                            <select id="chi-variable1">
+                                <option value="gender">性别</option>
+                                <option value="group">组别</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>变量2</label>
+                            <select id="chi-variable2">
+                                <option value="group">组别</option>
+                                <option value="gender">性别</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary" id="run-chi-test-btn">运行检验</button>
+                        <div id="chi-test-result" style="margin-top: 20px;"></div>
+                    </div>
+                </div>
+                
+                <!-- 回归分析 -->
+                <div id="regression" class="section" style="display: none;">
+                    <div class="form-group">
+                        <label>因变量</label>
+                        <select id="regression-dependent">
+                            <option value="score">得分</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>自变量</label>
+                        <select id="regression-independents" multiple style="height: 100px;">
+                            <option value="age">年龄</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" id="run-regression-btn">运行回归</button>
+                    <div id="regression-result" style="margin-top: 20px;"></div>
+                </div>
+                
+                <!-- 基础图表 -->
+                <div id="basic-charts" class="section" style="display: none;">
+                    <div class="form-group">
+                        <label>图表类型</label>
+                        <select id="chart-type">
+                            <option value="bar">条形图</option>
+                            <option value="line">折线图</option>
+                            <option value="scatter">散点图</option>
+                            <option value="histogram">直方图</option>
+                            <option value="pie">饼图</option>
+                            <option value="box">箱线图</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>X轴变量</label>
+                        <select id="x-variable">
+                            <option value="age">年龄</option>
+                            <option value="gender">性别</option>
+                            <option value="group">组别</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Y轴变量</label>
+                        <select id="y-variable">
+                            <option value="score">得分</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary" id="generate-chart-btn">生成图表</button>
+                    <div class="chart-container" style="margin-top: 20px;">
+                        <h3>图表</h3>
+                        <div id="chart" class="chart" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 右侧面板 -->
+        <div class="right-panel">
+            <div class="panel-section">
+                <h3>数据集信息</h3>
+                <div class="form-group">
+                    <label>数据集名称</label>
+                    <input type="text" id="dataset-name" value="未命名数据集">
+                </div>
+                <div class="form-group">
+                    <label>变量数量</label>
+                    <input type="text" id="variable-count" value="0" disabled>
+                </div>
+                <div class="form-group">
+                    <label>观测数量</label>
+                    <input type="text" id="observation-count" value="0" disabled>
+                </div>
+            </div>
+            <div class="panel-section">
+                <h3>操作</h3>
+                <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" id="save-dataset-btn">保存数据集</button>
+                <button class="btn" style="width: 100%;" id="clear-data-btn">清除数据</button>
+            </div>
+            <div class="panel-section">
+                <h3>Python服务器状态</h3>
+                <div id="server-status" class="message success">
+                    服务器运行中
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="js/dataManager.js"></script>
+    <script src="js/statsAnalyzer.js"></script>
+    <script src="js/chartManager.js"></script>
+    <script src="js/projectManager.js"></script>
+    <script>
+        // 全局变量
+        let dataManager = new DataManager();
+        let statsAnalyzer = new StatsAnalyzer();
+        let chartManager = new ChartManager();
+        let projectManager = new ProjectManager();
+        let currentData = null;
+        
+        // 切换侧边栏项
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.addEventListener('click', function() {
+                // 移除所有active类
+                document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+                // 添加active类到当前项
+                this.classList.add('active');
+                
+                // 隐藏所有section
+                document.querySelectorAll('.section').forEach(section => {
+                    section.style.display = 'none';
+                });
+                
+                // 显示对应的section
+                const sectionId = this.getAttribute('data-section');
+                document.getElementById(sectionId).style.display = 'block';
+                
+                // 更新工具栏标题
+                document.getElementById('toolbar-title').textContent = this.textContent;
+            });
+        });
+        
+        // 切换假设检验标签页
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // 移除所有active类
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                // 添加active类到当前项
+                this.classList.add('active');
+                
+                // 隐藏所有test-panel
+                document.querySelectorAll('.test-panel').forEach(panel => {
+                    panel.style.display = 'none';
+                });
+                
+                // 显示对应的test-panel
+                const testId = this.getAttribute('data-test');
+                document.getElementById(testId).style.display = 'block';
+            });
+        });
+        
+        // 模拟数据
+        const testData = {
+            'ID': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            '姓名': ['张三', '李四', '王五', '赵六', '钱七', '孙八', '周九', '吴十', '郑一', '王二'],
+            '年龄': [25, 28, 23, 30, 26, 24, 27, 29, 22, 25],
+            '性别': ['男', '女', '男', '女', '男', '女', '男', '女', '男', '女'],
+            '得分': [85, 92, 78, 88, 90, 82, 87, 91, 76, 84],
+            '组别': ['A', 'B', 'A', 'B', 'A', 'B', 'A', 'B', 'A', 'B']
+        };
+        
+        // 加载示例数据
+        async function loadSampleData() {
+            dataManager.loadData(testData);
+            currentData = dataManager.data;
+            updateDataTable();
+            updateDatasetInfo();
+            
+            // 加载数据到Python统计引擎
+            await statsAnalyzer.loadData(testData);
+            
+            // 更新项目数据
+            projectManager.updateProjectData(testData);
+        }
+        
+        // 更新数据表格
+        function updateDataTable() {
+            if (!currentData) return;
+            
+            const tableHeader = document.getElementById('table-header');
+            const tableBody = document.getElementById('table-body');
+            
+            // 清空表格
+            tableHeader.innerHTML = '';
+            tableBody.innerHTML = '';
+            
+            // 创建表头
+            const headerRow = document.createElement('tr');
+            Object.keys(currentData).forEach(key => {
+                const th = document.createElement('th');
+                th.textContent = key;
+                headerRow.appendChild(th);
+            });
+            tableHeader.appendChild(headerRow);
+            
+            // 创建表格内容
+            const rowCount = Object.values(currentData)[0].length;
+            for (let i = 0; i < rowCount; i++) {
+                const row = document.createElement('tr');
+                Object.values(currentData).forEach(values => {
+                    const td = document.createElement('td');
+                    td.textContent = values[i];
+                    row.appendChild(td);
+                });
+                tableBody.appendChild(row);
+            }
+            
+            // 显示表格容器
+            document.getElementById('data-table-container').style.display = 'block';
+            document.querySelector('.welcome-page').style.display = 'none';
+        }
+        
+        // 更新数据集信息
+        function updateDatasetInfo() {
+            if (!currentData) return;
+            
+            document.getElementById('variable-count').value = Object.keys(currentData).length;
+            document.getElementById('observation-count').value = Object.values(currentData)[0].length;
+        }
+        
+        // 事件监听器
+        document.getElementById('welcome-import-btn').addEventListener('click', loadSampleData);
+        document.getElementById('import-btn').addEventListener('click', loadSampleData);
+        document.getElementById('welcome-open-example-btn').addEventListener('click', loadSampleData);
+        
+        // 计算描述性统计
+        document.getElementById('calculate-stats-btn').addEventListener('click', async function() {
+            const select = document.getElementById('stats-variables');
+            const selectedVariables = Array.from(select.selectedOptions).map(option => option.value);
+            
+            if (selectedVariables.length === 0) {
+                alert('请选择至少一个变量');
+                return;
+            }
+            
+            // 显示加载动画
+            document.getElementById('stats-result').innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
+            
+            try {
+                // 调用统计分析器
+                const response = await statsAnalyzer.descriptiveStats(selectedVariables);
+                
+                if (response.status === 'success') {
+                    const result = response.data;
+                    
+                    // 显示结果
+                    let html = '<table>';
+                    html += '<tr><th>统计量</th>';
+                    selectedVariables.forEach(varName => {
+                        html += `<th>${varName}</th>`;
+                    });
+                    html += '</tr>';
+                    
+                    const stats = ['count', 'mean', 'std', 'min', '25%', '50%', '75%', 'max'];
+                    stats.forEach(stat => {
+                        html += `<tr><td>${stat}</td>`;
+                        selectedVariables.forEach(varName => {
+                            html += `<td>${result[varName][stat].toFixed(2)}</td>`;
+                        });
+                        html += '</tr>';
+                    });
+                    html += '</table>';
+                    
+                    document.getElementById('stats-result').innerHTML = html;
+                } else {
+                    document.getElementById('stats-result').innerHTML = `<div class="message error">${response.message}</div>`;
+                }
+            } catch (error) {
+                console.error('Error calculating descriptive stats:', error);
+                document.getElementById('stats-result').innerHTML = '<div class="message error">计算统计量时出错</div>';
+            }
+        });
+        
+        // 运行单样本t检验
+        document.getElementById('run-t-test-btn').addEventListener('click', async function() {
+            const variable = document.getElementById('t-test-variable').value;
+            const populationMean = parseFloat(document.getElementById('population-mean').value);
+            
+            // 显示加载动画
+            document.getElementById('t-test-result').innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
+            
+            try {
+                // 调用统计分析器
+                const response = await statsAnalyzer.tTestOneSample(variable, populationMean);
+                
+                if (response.status === 'success') {
+                    const result = response.data;
+                    
+                    // 显示结果
+                    let html = '<div class="analysis-result">';
+                    html += '<h4>单样本t检验结果</h4>';
+                    html += `<p>t统计量: ${result.t_statistic.toFixed(4)}</p>`;
+                    html += `<p>自由度: ${result.df}</p>`;
+                    html += `<p>p值: ${result.p_value.toFixed(4)}</p>`;
+                    html += `<p>结论: ${result.p_value > 0.05 ? '接受原假设' : '拒绝原假设'}</p>`;
+                    html += '</div>';
+                    
+                    document.getElementById('t-test-result').innerHTML = html;
+                } else {
+                    document.getElementById('t-test-result').innerHTML = `<div class="message error">${response.message}</div>`;
+                }
+            } catch (error) {
+                console.error('Error running t-test:', error);
+                document.getElementById('t-test-result').innerHTML = '<div class="message error">运行t检验时出错</div>';
+            }
+        });
+        
+        // 运行独立样本t检验
+        document.getElementById('run-indep-t-test-btn').addEventListener('click', async function() {
+            const variable = document.getElementById('indep-dependent').value;
+            const groupVariable = document.getElementById('indep-group').value;
+            
+            // 显示加载动画
+            document.getElementById('indep-t-test-result').innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
+            
+            try {
+                // 调用统计分析器
+                const response = await statsAnalyzer.tTestIndependent(variable, groupVariable);
+                
+                if (response.status === 'success') {
+                    const result = response.data;
+                    
+                    // 显示结果
+                    let html = '<div class="analysis-result">';
+                    html += '<h4>独立样本t检验结果</h4>';
+                    html += `<p>t统计量: ${result.t_statistic.toFixed(4)}</p>`;
+                    html += `<p>自由度: ${result.df}</p>`;
+                    html += `<p>p值: ${result.p_value.toFixed(4)}</p>`;
+                    html += '<h5>组别均值</h5>';
+                    html += '<table>';
+                    Object.entries(result.group_means).forEach(([group, mean]) => {
+                        html += `<tr><td>${group}</td><td>${mean.toFixed(2)}</td></tr>`;
+                    });
+                    html += '</table>';
+                    html += `<p>结论: ${result.p_value > 0.05 ? '接受原假设' : '拒绝原假设'}</p>`;
+                    html += '</div>';
+                    
+                    document.getElementById('indep-t-test-result').innerHTML = html;
+                } else {
+                    document.getElementById('indep-t-test-result').innerHTML = `<div class="message error">${response.message}</div>`;
+                }
+            } catch (error) {
+                console.error('Error running independent t-test:', error);
+                document.getElementById('indep-t-test-result').innerHTML = '<div class="message error">运行独立样本t检验时出错</div>';
+            }
+        });
+        
+        // 运行卡方检验
+        document.getElementById('run-chi-test-btn').addEventListener('click', async function() {
+            const variable1 = document.getElementById('chi-variable1').value;
+            const variable2 = document.getElementById('chi-variable2').value;
+            
+            // 显示加载动画
+            document.getElementById('chi-test-result').innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
+            
+            try {
+                // 调用统计分析器
+                const response = await statsAnalyzer.chiSquareTest(variable1, variable2);
+                
+                if (response.status === 'success') {
+                    const result = response.data;
+                    
+                    // 显示结果
+                    let html = '<div class="analysis-result">';
+                    html += '<h4>卡方检验结果</h4>';
+                    html += `<p>卡方统计量: ${result.chi2_statistic.toFixed(4)}</p>`;
+                    html += `<p>自由度: ${result.df}</p>`;
+                    html += `<p>p值: ${result.p_value.toFixed(4)}</p>`;
+                    html += `<p>结论: ${result.p_value > 0.05 ? '接受原假设' : '拒绝原假设'}</p>`;
+                    html += '</div>';
+                    
+                    document.getElementById('chi-test-result').innerHTML = html;
+                } else {
+                    document.getElementById('chi-test-result').innerHTML = `<div class="message error">${response.message}</div>`;
+                }
+            } catch (error) {
+                console.error('Error running chi-square test:', error);
+                document.getElementById('chi-test-result').innerHTML = '<div class="message error">运行卡方检验时出错</div>';
+            }
+        });
+        
+        // 运行线性回归
+        document.getElementById('run-regression-btn').addEventListener('click', async function() {
+            const dependent = document.getElementById('regression-dependent').value;
+            const select = document.getElementById('regression-independents');
+            const independents = Array.from(select.selectedOptions).map(option => option.value);
+            
+            if (independents.length === 0) {
+                alert('请选择至少一个自变量');
+                return;
+            }
+            
+            // 显示加载动画
+            document.getElementById('regression-result').innerHTML = '<div class="loading"><div class="loading-spinner"></div></div>';
+            
+            try {
+                // 调用统计分析器
+                const response = await statsAnalyzer.linearRegression(dependent, independents);
+                
+                if (response.status === 'success') {
+                    const result = response.data;
+                    
+                    // 显示结果
+                    let html = '<div class="analysis-result">';
+                    html += '<h4>线性回归结果</h4>';
+                    html += '<h5>系数</h5>';
+                    html += '<table>';
+                    Object.entries(result.coefficients).forEach(([varName, coef]) => {
+                        html += `<tr><td>${varName}</td><td>${coef.toFixed(4)}</td></tr>`;
+                    });
+                    html += `<tr><td>截距</td><td>${result.intercept.toFixed(4)}</td></tr>`;
+                    html += '</table>';
+                    html += `<p>R²: ${result.r_squared.toFixed(4)}</p>`;
+                    html += '</div>';
+                    
+                    document.getElementById('regression-result').innerHTML = html;
+                } else {
+                    document.getElementById('regression-result').innerHTML = `<div class="message error">${response.message}</div>`;
+                }
+            } catch (error) {
+                console.error('Error running regression:', error);
+                document.getElementById('regression-result').innerHTML = '<div class="message error">运行回归分析时出错</div>';
+            }
+        });
+        
+        // 生成图表
+        document.getElementById('generate-chart-btn').addEventListener('click', function() {
+            if (!currentData) {
+                alert('请先加载数据');
+                return;
+            }
+            
+            const chartType = document.getElementById('chart-type').value;
+            const xVariable = document.getElementById('x-variable').value;
+            const yVariable = document.getElementById('y-variable').value;
+            
+            // 销毁之前的图表
+            chartManager.destroyChart('chart');
+            
+            // 根据图表类型生成不同的图表
+            switch (chartType) {
+                case 'bar':
+                    chartManager.barChart('chart', currentData, xVariable, yVariable);
+                    break;
+                case 'line':
+                    chartManager.lineChart('chart', currentData, xVariable, yVariable);
+                    break;
+                case 'scatter':
+                    chartManager.scatterChart('chart', currentData, xVariable, yVariable);
+                    break;
+                case 'histogram':
+                    chartManager.histogramChart('chart', currentData, yVariable);
+                    break;
+                case 'pie':
+                    chartManager.pieChart('chart', currentData, xVariable);
+                    break;
+                case 'box':
+                    chartManager.boxChart('chart', currentData, yVariable);
+                    break;
+                default:
+                    alert('不支持的图表类型');
+            }
+        });
+        
+        // 保存数据集
+        document.getElementById('save-dataset-btn').addEventListener('click', function() {
+            if (!currentData) {
+                alert('没有数据可保存');
+                return;
+            }
+            
+            const datasetName = document.getElementById('dataset-name').value;
+            alert(`数据集 "${datasetName}" 已保存`);
+        });
+        
+        // 清除数据
+        document.getElementById('clear-data-btn').addEventListener('click', function() {
+            if (confirm('确定要清除所有数据吗？')) {
+                dataManager.loadData(null);
+                currentData = null;
+                document.getElementById('data-table-container').style.display = 'none';
+                document.querySelector('.welcome-page').style.display = 'flex';
+                updateDatasetInfo();
+            }
+        });
+        
+        // 接收来自主进程的菜单操作
+        window.electronAPI.onMenuAction((event, action) => {
+            console.log('Menu action:', action);
+            // 处理菜单操作
+            if (action === 'new-project') {
+                alert('新建项目');
+            } else if (action === 'open-project') {
+                alert('打开项目');
+            } else if (action === 'save-project') {
+                alert('保存项目');
+            }
+        });
+    </script>
+</body>
+</html>

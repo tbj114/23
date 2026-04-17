@@ -1,0 +1,46 @@
+{
+  "name": "axaltyx",
+  "version": "1.0.0",
+  "description": "AxaltyX - 专业统计分析软件",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "keywords": [
+    "statistics",
+    "data-analysis",
+    "research",
+    "electron"
+  ],
+  "author": "TBJ114",
+  "license": "Proprietary",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "dependencies": {
+    "arco-design": "^2.52.0",
+    "echarts": "^5.4.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "build": {
+    "appId": "com.tbj114.axaltyx",
+    "productName": "AxaltyX",
+    "target": "nsis",
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64", "ia32"]
+        }
+      ]
+    }
+  }
+}
